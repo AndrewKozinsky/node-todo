@@ -18,7 +18,11 @@
     "type": "git",
     "url": "https://github.com/AndrewKozinsky/node-todo"
   },
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
