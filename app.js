@@ -1,17 +1,28 @@
 const express = require('express');
+const userRouter = require('./api/routes/userRouter');
+const AppError = require('./api/utils/appError')
+const globalErrorHandler = require('./api/controllers/errorController')
 
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.status(200).send(`<h1>Hello, Andrew</h1>`)
-});
+// Добавлю свойство body в объекте запроса
+app.use(express.json())
+
+// Маршруты
+app.use('/api/v1/users', userRouter);
+
+
+// Обработка несуществующего маршрута
+app.all("*", (req, res, next) => {
+    next(
+        new AppError(`Can't find ${req.originalUrl} on the server!`, 404)
+    )
+})
+
+// Глобальный обработчик ошибок
+app.use(globalErrorHandler)
 
 
 module.exports = app;
 
-
-
-//andrew
-//-E8XZ.bq_WAb.uU
-//mongodb+srv://andrew:<password>@cluster0-mi7ym.mongodb.net/test?retryWrites=true&w=majority
