@@ -5,9 +5,8 @@ dotenv.config({ path: './config.env' });
 // Выключение сервера при ошибке типа uncaughtException
 process.on('uncaughtException', err => {
     console.log('UNCAUGHT EXCEPTION 💥. Shutting down...');
-    server.close(() => {
-        process.exit(1)
-    })
+    console.log(err.name, err.message);
+    process.exit(1)
 })
 
 // Подключение файла app.js с маршрутами

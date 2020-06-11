@@ -9,13 +9,13 @@ const noteSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
-    active: {
-        type: Boolean,
-        default: true
+    userId: {
+        type: String,
+        required: [true, 'Please provide user\'s id' ]
     }
-});
+})
 
 
-const Note = mongoose.model('Note', noteSchema);
+const Note = mongoose.model('Note', noteSchema)
 
-module.exports = Note;
+module.exports = Note
