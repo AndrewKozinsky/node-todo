@@ -1,11 +1,9 @@
-import Log from './log'
-import Calc from './calc'
-import img from './logo.png'
-import './main.scss'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/app'
 
-console.log(img);
 
-const log = new Log
-const calc = new Calc
-
-log.log( calc.add(1, 2, 3) )
+ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+)

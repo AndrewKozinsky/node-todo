@@ -26,11 +26,18 @@ const rater = rateLimit({
 })
 app.use('/api', rater)
 
+// Статические файлы
+app.use(express.static(`${__dirname}/app/dist`))
 
-// Маршруты
+
+// Маршруты API
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/myNotes', myNotesRouter)
 
+// Маршруты сайта
+app.use('/', (req, res, next) => {
+    res.status(200).send('<h1>Header</h1>')
+})
 
 // Обработка несуществующего маршрута
 app.all("*", (req, res, next) => {
@@ -44,4 +51,3 @@ app.use(globalErrorHandler)
 
 
 module.exports = app;
-

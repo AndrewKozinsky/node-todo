@@ -48,9 +48,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "app/index.html",
-            buildTime: new Date().toISOString(),
-            title: 'Hello, World!'
+            template: "app/index.html"
         })
     ],
     devtool: 'inline-source-map',
