@@ -5,8 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "debug": "ndb server.js"
+    "server-dev": "nodemon server.js",
+    "server-debug": "ndb server.js",
+    "react-dev": "webpack-dev-server --config webpack.dev.config.js",
+    "react-build": "webpack --config webpack.prod.config.js"
   },
   "keywords": [
     "node.js",
@@ -24,6 +26,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.0",
@@ -32,11 +35,36 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.16",
     "nodemailer": "^6.4.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "validator": "^13.0.0",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/plugin-transform-block-scoping": "^7.10.1",
+    "@babel/plugin-transform-classes": "^7.10.1",
+    "@babel/plugin-transform-template-literals": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
     "ndb": "^1.1.5",
-    "nodemon": "^2.0.4"
-  }
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4",
+    "sass-loader": "^8.0.2",
+    "source-map-loader": "^1.0.0",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 ios versions"
+  ]
 }
