@@ -37,11 +37,24 @@ module.exports = {
             },
             // Loading CSS
             {
-                test: /\.s[ac]ss$/,
+                test: /\.s?[ac]ss$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader",
                     "sass-loader"
+                ]
+            },
+            // Loading fonts
+            {
+                test: /\.woff2$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            outputPath: 'fonts',
+                            name: '[name].[ext]'
+                        }
+                    }
                 ]
             }
         ]

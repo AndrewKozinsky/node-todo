@@ -1,14 +1,17 @@
-import React from 'react';
-import logoImg from './img/logo.png'
+import React from 'react'
+import './css/reset.css';
+import './css/app.scss';
+
+import Button from "../formElements/button";
 
 
 const App = () => {
     
     return(
-        <>
-            <h1>{logoImg}</h1>
-            <img src={logoImg} alt='logo' />
-        </>
+        <div className='app'>
+            <Button text='Войти' />
+            <Button text='Войти' disabled={true} />
+        </div>
     )
 }
 

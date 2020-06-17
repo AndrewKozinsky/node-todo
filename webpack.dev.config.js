@@ -18,8 +18,8 @@ module.exports = {
                 exclude: '/node_modules/',
                 enforce: 'pre',
                 use: [
-                    { loader: "babel-loader" },
-                    { loader: 'source-map-loader' }
+                    'babel-loader',
+                    'source-map-loader'
                 ]
             },
             // Loading images
@@ -37,11 +37,24 @@ module.exports = {
             },
             // Loading CSS
             {
-                test: /\.s[ac]ss$/,
+                test: /\.s?[ac]ss$/,
                 use: [
                     "style-loader",
                     "css-loader",
                     "sass-loader"
+                ]
+            },
+            // Loading fonts
+            {
+                test: /\.woff2$/,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            outputPath: 'fonts',
+                            name: '[name].[ext]'
+                        }
+                    }
                 ]
             }
         ]

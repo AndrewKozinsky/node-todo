@@ -1,0 +1,21 @@
+.btn {
+    font-size: 1.6rem;
+    line-height: 2rem;
+    color: var(--text-color);
+
+    background-color: var(--color-1);
+    cursor: pointer;
+    padding: 5px 15px;
+    border: none;
+    border-radius: var(--radius);
+
+    &:hover {
+        background-color: var(--color-2);
+    }
+
+    &:disabled {
+        color: var(--color-4);
+        background-color: white;
+        cursor: default;
+    }
+}

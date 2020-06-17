@@ -1,0 +1,26 @@
+/* Функции */
+// Функция задаёт прокрутку с определенным стилем.
+/*%scrollbar {
+    scrollbar-color: rgba(0, 0, 0, .4) transparent;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 7px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: var(--radius);
+        background: rgba(0, 0, 0, .35);
+    }
+
+    &::-webkit-resizer, &::-webkit-scrollbar-corner {
+        background-color: var(--color-4);
+        border: none;
+    }
+}*/
+
+/*
+%scrollbar:focus {
+    &::-webkit-resizer, &::-webkit-scrollbar-corner {
+        background-color: var(--focus-bg-color);
+    }
+}*/
