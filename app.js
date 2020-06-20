@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const userRouter = require('./api/routes/userRouter')
 const myNotesRouter = require('./api/routes/myNotesRouter')
+const siteRouter = require('./api/routes/siteRouter')
 const AppError = require('./api/utils/appError')
 const globalErrorHandler = require('./api/controllers/errorController')
 
@@ -35,9 +36,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/myNotes', myNotesRouter)
 
 // Маршруты сайта
-app.use('/', (req, res, next) => {
-    res.status(200).send('<h1>Header</h1>')
-})
+app.use('/', siteRouter)
 
 // Обработка несуществующего маршрута
 app.all("*", (req, res, next) => {

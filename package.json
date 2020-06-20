@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server-dev": "nodemon server.js",
-    "server-debug": "ndb server.js",
-    "react-dev": "webpack-dev-server --config webpack.dev.config.js",
-    "react-build": "webpack --config webpack.prod.config.js"
+    "node-dev": "nodemon server.js",
+    "node-debug": "ndb server.js",
+    "react-dev": "webpack-dev-server",
+    "react-build": "webpack --env.mode=production"
   },
   "keywords": [
     "node.js",
@@ -37,6 +37,7 @@
     "nodemailer": "^6.4.8",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "validator": "^13.0.0",
     "xss-clean": "^0.1.1"
   },

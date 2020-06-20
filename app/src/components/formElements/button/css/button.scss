@@ -1,10 +1,13 @@
 .btn {
+    display: inline-block;
     font-size: 1.6rem;
     line-height: 2rem;
     color: var(--text-color);
 
     background-color: var(--color-1);
     cursor: pointer;
+    transition: background-color .2s;
+
     padding: 5px 15px;
     border: none;
     border-radius: var(--radius);
@@ -13,9 +16,57 @@
         background-color: var(--color-2);
     }
 
+    &:focus {
+        box-shadow: 0 0 0 1px var(--link-color);
+    }
+
     &:disabled {
         color: var(--color-4);
         background-color: white;
         cursor: default;
+        box-shadow: 0 0 0 1px rgb(200, 200, 200);
+
+        & .btn__sign {
+            opacity: .5;
+        }
     }
+}
+
+.btn--mode-1 {
+    background-color: transparent;
+
+    &:hover {
+        background-color: transparent;
+        box-shadow: 0 0 0 1px var(--color-2);
+    }
+}
+
+.btn--mode-2 {
+    border-radius: var(--radius-2);
+}
+
+.btn__sign {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: text-bottom;
+}
+.btn__sign--person {
+    background-image: url("../svg/person.svg");
+}
+.btn__sign--exit {
+    background-image: url("../svg/exit.svg");
+}
+.btn__sign--check-all {
+    background-image: url("../svg/check-all.svg");
+}
+.btn__sign--sun {
+    background-image: url("../svg/sun.svg");
+}
+.btn__sign--close {
+    background-image: url("../svg/close.svg");
+}
+
+.btn__counter {
+    color: rgb(180, 180, 180);
 }
