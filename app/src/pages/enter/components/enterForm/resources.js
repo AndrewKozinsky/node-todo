@@ -1,10 +1,11 @@
+import React from "react";
 import * as Yup from "yup";
+import browserConfig from '../../../../browserConfig'
 import {Form} from "formik";
 import FieldsDividerWrapper from "../../../../components/formContainers/fieldsDividerWrapper";
 import TextInput from "../../../../components/formElements/textInput";
 import Button from "../../../../components/formElements/button";
 import {setUser} from "../../../../store/actions";
-import React from "react";
 
 
 // Начальные значения полей формы
@@ -91,15 +92,13 @@ function SubmitBtn({formik}) {
 export async function onSubmitHandler(values, setServerErr, dispatch) {
     
     // По какому адресу буду делать запрос на вход пользователя
-    // TODO Когда загрузишь на сервер, то тут будет ошибка
-    //  потому что нужно заменить адрес на настоящий. Пока не знаю как это сделать.
-    const apiUrl = `http://localhost:3000/api/v1/users/login`
+    const {serverOrigin, isDevelopment} = browserConfig
+    const apiUrl = serverOrigin + '/api/v1/users/login'
     
     // Параметры запроса
     const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'same-origin',
         body: JSON.stringify(values)
     }
     
@@ -144,9 +143,13 @@ export async function onSubmitHandler(values, setServerErr, dispatch) {
     
     // Если успешный ответ
     if(serverRes.status === 'success') {
-        // console.log(serverRes);
         // Получить данные пользователя
         const userData = serverRes.data.user
+        
+        // Если нахожусь в режиме разработке, то поставить токен в LocalStorage
+        if(isDevelopment) {
+            localStorage.setItem('authToken', serverRes.token)
+        }
         
         // Поставить их в Хранилище
         dispatch(setUser(userData.name, userData.email))

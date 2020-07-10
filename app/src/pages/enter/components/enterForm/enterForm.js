@@ -18,9 +18,8 @@ function EnterForm() {
     
     const dispatch = useDispatch()
     
-    // Если сервер сообщит об ошибке, то вызову setServerErr()
-    // и занесу текст ошибки в serverErrText. А если там будет ошибка, то в serverError
-    // будет сообщение об ошибке, которое будет показано ниже формы.
+    // Если сервер сообщит об ошибке, то вызову setServerErr() и занесу текст ошибки в serverErrText.
+    // А если там будет ошибка, то в serverError будет сообщение об ошибке, которое будет показано ниже формы.
     let [serverErrText, setServerErr] = useState(null)
     let serverError = serverErrText
         ? <Error text={serverErrText} indent='1' />

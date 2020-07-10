@@ -15,28 +15,28 @@ const app = require('./app');
 // Строка с данными о подключении
 const DB = process.env.DATABASE
     .replace('<PASSWORD>', process.env.DATABASE_PASSWORD)
-    .replace('<USERNAME>', process.env.DATABASE_USERNAME);
+    .replace('<USERNAME>', process.env.DATABASE_USERNAME)
 
 // Настройка Монгуса чтобы не ругался
-mongoose.set('useCreateIndex', true);
+mongoose.set('useCreateIndex', true)
 
 // Настройка соединения с MongoDB
 mongoose.connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(con => {
-    console.log('DB connection successful!');
-});
+    console.log('DB connection successful!')
+})
 
 
 // Прослушивание порта на сервере
 const server = app.listen(process.env.PORT, () => {
-    console.log('Server started 🔥');
-});
+    console.log('Server started 🔥')
+})
 
 // Выключение сервера при ошибке типа unhandledRejection
 process.on('unhandledRejection', err => {
-    console.log(err);
+    console.log(err)
     console.log('UNHANDLED REJECTION. 💥 Shitting down...');
     server.close(() => {
         process.exit(1)
