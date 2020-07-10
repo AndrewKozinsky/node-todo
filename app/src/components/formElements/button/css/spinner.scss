@@ -1,8 +1,11 @@
-@keyframes ldio-b2caqbeydll {
+@import "../../../app/css/variables";
+
+
+@keyframes spinner {
     0% {transform: translate(-50%, -50%) rotate(0deg);}
     100% {transform: translate(-50%,-50%) rotate(360deg);}
 }
-.ldio-b2caqbeydll div {
+:global(.btnSpinner) div {
     position: absolute;
     width: 12px;
     height: 12px;
@@ -10,24 +13,26 @@
     border-top-color: transparent;
     border-radius: 50%;
 }
-.ldio-b2caqbeydll div {
-    animation: ldio-b2caqbeydll 1s linear infinite;
+:global(.btnSpinner) div {
+    animation: spinner 1s linear infinite;
     top: 8px;
     left: 8px;
 }
-.loadingio-spinner-rolling-1en6plzu7rki {
+:global(.btnSpinnerWrapper) {
     display: inline-block;
     width: 16px;
     height: 16px;
     vertical-align: text-bottom;
     overflow: hidden;
     background: none;
+
+    margin-right: 5px;
 }
-.ldio-b2caqbeydll {
+:global(.btnSpinner) {
     width: 100%;
     height: 100%;
     position: relative;
     backface-visibility: hidden;
     transform-origin: 0 0;
 }
-.ldio-b2caqbeydll div {box-sizing: content-box;}
+:global(.btnSpinner) div {box-sizing: content-box;}

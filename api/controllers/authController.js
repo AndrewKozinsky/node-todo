@@ -132,6 +132,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
 
 // Вход пользователя
 exports.logIn = catchAsync(async (req, res, next) => {
+    
     // Получу почту и пароль из теле запроса
     const {email, password} = req.body;
     
@@ -143,7 +144,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
     }
     
     // Получу данные пользователя
-    const user = await User.findOne({email}).select('+password')
+    const user = await User.findOne({email}).select('+password -_id -__v')
     
     // Если пользователь не найден или пароли не совпадают, то бросить ошибку.
     if(!user || !await user.correctPassword(password, user.password)) {
@@ -158,10 +159,6 @@ exports.logIn = catchAsync(async (req, res, next) => {
         return next(
             new AppError('Please, confirm your email.', 403)
         )
-        /*res.status(403).json({
-            status: 'success',
-            message: 'Please, confirm your email.'
-        })*/
     }
     
     // Отправить данные пользователя

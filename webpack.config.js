@@ -1,5 +1,5 @@
 const path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
@@ -59,7 +59,10 @@ module.exports = (env = {}) => {
                     {
                         loader: "css-loader",
                         options: {
-                            modules: true
+                            modules: {
+                                mode: 'local',
+                                localIdentName: '[local]--[hash:base64:7]',
+                            },
                         }
                     },
                     "sass-loader"
@@ -74,7 +77,7 @@ module.exports = (env = {}) => {
                     {
                         loader: "css-loader",
                         options: {
-                            modules: true
+                            modules: true,
                         }
                     },
                     "sass-loader"
@@ -96,7 +99,7 @@ module.exports = (env = {}) => {
         if(mode === 'production') {
             pluginsConfig.push(
                 new MiniCssExtractPlugin({
-                    filename: 'main-[hash:8].css'
+                    filename: 'index-[hash:8].css'
                 })
             )
         }
@@ -147,7 +150,8 @@ module.exports = (env = {}) => {
         plugins: managePlugins(),
         devtool: 'inline-source-map',
         devServer: {
-            port: 3000
+            port: 8080,
+            historyApiFallback: true
         }
     }
 };

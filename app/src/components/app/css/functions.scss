@@ -8,12 +8,12 @@
         width: 7px;
     }
     &::-webkit-scrollbar-thumb {
-        border-radius: var(--radius);
+        border-radius: $radius;
         background: rgba(0, 0, 0, .35);
     }
 
     &::-webkit-resizer, &::-webkit-scrollbar-corner {
-        background-color: var(--color-4);
+        background-color: lighten($color-1, 45%);
         border: none;
     }
 }*/

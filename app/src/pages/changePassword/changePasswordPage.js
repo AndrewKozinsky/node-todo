@@ -1,5 +1,5 @@
 import React from 'react'
-import TopNavigation from "../components/topNavigation";
+import TopNavigation from "../../components/topNavEntrance";
 
 
 function ChangePasswordPage() {

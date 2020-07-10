@@ -1,29 +1,32 @@
-.text-input {
+@import "../../../app/css/variables";
+
+
+:global(.text-input) {
     display: block;
     width: 100%;
     box-sizing: border-box;
 
     font-size: 1.6rem;
     line-height: 2rem;
-    color: var(--text-color);
-    background-color: var(--color-1);
+    color: $text-color;
+    background-color: $color-1;
 
     padding: 5px 10px;
     border: none;
-    border-radius: var(--radius);
+    border-radius: $radius;
 
     &::placeholder {
         font-size: 1.3rem;
     }
 
     &:focus {
-        background-color: var(--color-5);
-        box-shadow: 0 0 0 1px var(--link-color);
+        background-color: $radius-2;
+        box-shadow: 0 0 0 1px $link-color;
     }
 
     &:disabled {
-        color: var(--color-4);
-        background-color: var(--color-6);
+        color: lighten($text-color, 50%);
+        background-color: darken( $color-1, 2% );
     }
 
     &::-webkit-search-cancel-button{
@@ -37,7 +40,7 @@
     }
 }
 
-.text-input--search {
+:global(.text-input--search) {
     padding-left: 33px;
     border-radius: var(--radius-2);
 
@@ -46,7 +49,7 @@
     background-position: 14px center;
 }
 
-.input-label {
+:global(.input-label) {
     display: block;
     margin-bottom: 4px;
 }

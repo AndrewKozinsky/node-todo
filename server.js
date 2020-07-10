@@ -31,7 +31,7 @@ mongoose.connect(DB, {
 
 // Прослушивание порта на сервере
 const server = app.listen(process.env.PORT, () => {
-    console.log('Server started');
+    console.log('Server started 🔥');
 });
 
 // Выключение сервера при ошибке типа unhandledRejection

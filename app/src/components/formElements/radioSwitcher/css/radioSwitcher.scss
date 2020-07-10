@@ -1,13 +1,16 @@
+@import "../../../app/css/variables";
+
+
 .radio-switcher {
     .btn {
         border-radius: 0;
 
         &:first-child {
-            border-radius: var(--radius) 0 0 var(--radius);
+            border-radius: $radius 0 0 $radius;
         }
 
         &:last-child {
-            border-radius: 0 var(--radius) var(--radius) 0;
+            border-radius: 0 $radius $radius 0;
         }
     }
 }

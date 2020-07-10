@@ -10,13 +10,13 @@ import {
     Link
 } from "react-router-dom";
 
-import IndexPage from "../../pages/index"
-import RegPage from "../../pages/reg"
-import EnterPage from "../../pages/enter"
-import PasswordResetPage from "../../pages/passwordReset"
-import ChangePasswordPage from "../../pages/changePassword"
-import NotesPage from "../../pages/notes"
-import UserPage from "../../pages/user"
+import MainPage from "../../pages/main/mainPage"
+import RegPage from "../../pages/reg/regPage"
+import EnterPage from "../../pages/enter/enterPage"
+import PasswordResetPage from "../../pages/passwordReset/passwordResetPage"
+import ChangePasswordPage from "../../pages/changePassword/changePasswordPage"
+import NotesPage from "../../pages/notes/notesPage"
+import UserPage from "../../pages/user/userPage"
 
 
 
@@ -25,41 +25,37 @@ const App = () => {
     return (
         <Router>
             <div className={s.app}>
-                <div className={s.wrapper_1}>
-                    <Link to='/'>Main</Link>
-                    <Link to='/reg'>Registration</Link>
-                    <Link to='/enter'>Enter</Link>
-                    <Link to='/password-reset'>Password reset</Link>
-                    <Link to='/change-password'>Change password</Link>
-                    <Link to='/notes'>Notes</Link>
-                    <Link to='/user'>User</Link>
-                    
-                    <hr />
-                    
-                    <Switch>
-                        <Route path='/' exact>
-                            <IndexPage />
-                        </Route>
-                        <Route path='/reg'>
-                            <RegPage />
-                        </Route>
-                        <Route path='/enter'>
-                            <EnterPage />
-                        </Route>
-                        <Route path='/password-reset'>
-                            <PasswordResetPage />
-                        </Route>
-                        <Route path='/change-password'>
-                            <ChangePasswordPage />
-                        </Route>
-                        <Route path='/notes'>
-                            <NotesPage />
-                        </Route>
-                        <Route path='/user'>
-                            <UserPage />
-                        </Route>
-                    </Switch>
-                </div>
+                {/*<Link to='/'>Main</Link>
+                <Link to='/reg'>Registration</Link>
+                <Link to='/enter'>Enter</Link>
+                <Link to='/password-reset'>Password reset</Link>
+                <Link to='/change-password'>Change password</Link>
+                <Link to='/notes'>Notes</Link>
+                <Link to='/user'>User</Link>*/}
+                
+                <Switch>
+                    <Route path='/' exact>
+                        <MainPage />
+                    </Route>
+                    <Route path='/reg'>
+                        <RegPage />
+                    </Route>
+                    <Route path='/enter'>
+                        <EnterPage />
+                    </Route>
+                    <Route path='/password-reset'>
+                        <PasswordResetPage />
+                    </Route>
+                    <Route path='/change-password'>
+                        <ChangePasswordPage />
+                    </Route>
+                    <Route path='/notes'>
+                        <NotesPage />
+                    </Route>
+                    <Route path='/user'>
+                        <UserPage />
+                    </Route>
+                </Switch>
             </div>
         </Router>
     )

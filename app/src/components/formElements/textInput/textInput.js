@@ -1,30 +1,33 @@
 import React from 'react'
+import { Formik, Form, useField } from 'formik';
+import Error from "../error";
 import './css/textInput.scss'
 
 
-function TextInput(props) {
-    const {
-        label, // Подпись к полю ввода
-        type = 'text', // Тип поля. Принимаются любые значения допустимые для <input>
-        placeholder, // Текстозаполнитель
-        value,
-        disabled = false, // Заблокировано ли поле ввода
-    } = props
+function TextInput({ label, ...props }) {
+    
+    const [field, meta] = useField(props);
     
     let [labelEl, id] = createLabel(label);
     
     let cls = 'text-input'
-    if(type === 'search') cls += ' text-input--search'
+    if(props.type === 'search') cls += ' text-input--search'
+    
     
     return <>
         {labelEl}
         <input
-        type={type}
-        value={value}
-        id={id}
-        className={cls}
-        placeholder={placeholder}
-        disabled={disabled} />
+            className={cls}
+            {...field}
+            type={props.type}
+            id={id}
+            placeholder={props.placeholder}
+            autoComplete={props.autoComplete}
+            disabled={props.disabled}
+        />
+        {meta.touched && meta.error
+            ? <Error text={meta.error} indent={1} />
+            : null}
     </>
 }
 

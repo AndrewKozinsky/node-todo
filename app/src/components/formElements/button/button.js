@@ -1,37 +1,49 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import './css/button.scss'
 import './css/spinner.scss'
 
 
 function Button(props) {
     const {
-        tag,
         text = `Text didn't pass`, // Текст на кнопке
-        href,
-        mode1,
-        mode2,
-        sign, // Значёк на кнопке. Значения: person, exit, check-all, sun, close, spinner
+        i,
         counter, // Счётчик на кнопке
         disabled = false, // Заблокирована ли кнопка
     } = props
     
-    // Тег элемента
-    const Tag = tag === 'a' ? 'a' : 'button'
+    const attrs = {}
+    
+    // Тип кнопки
+    attrs.type = props.type ? props.type : 'button'
+    if(props.href) delete attrs.type
     
     // Формирование классов
     let cls = 'btn'
-    if(mode1) cls += ' btn--mode-1'
-    if(mode2) cls += ' btn--mode-2'
+    if(props.mode1) cls += ' btn--mode-1'
+    if(props.mode2) cls += ' btn--mode-2'
+    attrs.className = cls
     
-    const signEl = createSign(sign)
-    const counterEl = <span className='btn__counter'>{counter}</span>
+    // Аттрибут href
+    if(props.href) attrs.to = props.href
     
-    return <Tag className={cls} href={href} disabled={disabled}>
-        {signEl} {text} {counterEl}
-    </Tag>
+    // Аттрибут disabled
+    if(disabled) attrs.disabled = true
+    
+    if(i) attrs.key = i
+    
+    // Контент
+    const signEl = createSign(props.sign)
+    const counterEl = <span className='btn__counter' key='b'>{counter}</span>
+    const innerContent = [signEl, text, counterEl]
+    
+    
+    return  props.tag === 'a'
+        ? <Link {...attrs}>{innerContent}</Link>
+        : <button {...attrs}>{innerContent}</button>
 }
 
-
+// type —- значёк на кнопке. Значения: person, exit, check-all, sun, close, spinner
 function createSign(type) {
     if(!type) return null
     if(type === 'spinner') return createSpinner()
@@ -56,13 +68,13 @@ function createSign(type) {
             break
     }
     
-    return <span className={cls} />
+    return <span className={cls} key='a' />
 }
 
 function createSpinner() {
     return (
-        <div className="loadingio-spinner-rolling-1en6plzu7rki">
-            <div className="ldio-b2caqbeydll">
+        <div className='btnSpinnerWrapper' key='h'>
+            <div className='btnSpinner'>
                 <div />
             </div>
         </div>
