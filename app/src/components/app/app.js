@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './css/reset.css'
 import './css/general.scss'
 import s from './css/app.scss'
@@ -17,10 +17,17 @@ import PasswordResetPage from "../../pages/passwordReset/passwordResetPage"
 import ChangePasswordPage from "../../pages/changePassword/changePasswordPage"
 import NotesPage from "../../pages/notes/notesPage"
 import UserPage from "../../pages/user/userPage"
+// import {getUserCredentials} from "./resources";
+
 
 
 
 const App = () => {
+    
+    // При первоначальной отрисовке приложения посмотреть в браузере наличие токена.
+    useEffect(() => {
+        // getUserCredentials()
+    }, [])
 
     return (
         <Router>

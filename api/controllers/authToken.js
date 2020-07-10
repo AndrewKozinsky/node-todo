@@ -1,4 +1,6 @@
+const {promisify} = require('util');
 const jwt = require('jsonwebtoken');
+const User = require('../mongooseModels/user');
 
 
 /**
@@ -7,14 +9,13 @@ const jwt = require('jsonwebtoken');
  * @returns {undefined|*}
  */
 const signToken = id => {
+    // console.log('User id is', user);
     return jwt.sign(
         { id },
         process.env.JWT_SECRET,
         { expiresIn: process.env.JWT_EXPIRES_IN }
     )
 }
-
-exports.signToken = signToken
 
 
 /**
@@ -24,7 +25,7 @@ exports.signToken = signToken
  * @param res
  */
 const createSendToken = (user, res, statusCode = 200) => {
-    const token = signToken(user.id)
+    const token = signToken(user._id)
     
     // Если нахожусь в режиме публикации, то отправлять куку с токеном
     if(process.env.NODE_ENV === 'production') {
@@ -49,4 +50,5 @@ const createSendToken = (user, res, statusCode = 200) => {
     })
 }
 
-exports.createSendToken = createSendToken
+
+module.exports.createSendToken = createSendToken

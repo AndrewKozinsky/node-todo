@@ -5,7 +5,7 @@ const User = require('../mongooseModels/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
-const authToken = require('./authToken');
+const {createSendToken} = require('./authToken');
 
 
 /**
@@ -34,7 +34,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     let token;
     
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        token = req.headers.authorization.split(' ')[1];
+        token = req.headers.authorization.split(' ')[1]
     } else if(req.cookie && req.cookie.jwt) {
         token = req.cookie.jwt
     }
@@ -68,6 +68,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     
     // Поставить в req.user данные пользователя
     req.user = currentUser;
+    console.log(currentUser);
     
     next();
 })
@@ -126,7 +127,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
     delete user.emailConfirmToken
     
     // Отправить данные пользователя и токен доступа к страницам
-    authToken.createSendToken(user, res)
+    createSendToken(user, res)
 })
 
 
@@ -134,7 +135,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
 exports.logIn = catchAsync(async (req, res, next) => {
     
     // Получу почту и пароль из теле запроса
-    const {email, password} = req.body;
+    let {email, password} = req.body;
     
     // Если почту или пароль не передали, то попросить их ввести и завершить функцию
     if(!email || !password) {
@@ -144,7 +145,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
     }
     
     // Получу данные пользователя
-    const user = await User.findOne({email}).select('+password -_id -__v')
+    const user = await User.findOne({email}).select('+password -__v')
     
     // Если пользователь не найден или пароли не совпадают, то бросить ошибку.
     if(!user || !await user.correctPassword(password, user.password)) {
@@ -162,7 +163,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
     }
     
     // Отправить данные пользователя
-    authToken.createSendToken(user, res)
+    createSendToken(user, res)
 })
 
 // Выход пользователя
@@ -283,7 +284,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     
     await user.save();
     
-    authToken.createSendToken(user, res)
+    createSendToken(user, res)
 })
 
 
