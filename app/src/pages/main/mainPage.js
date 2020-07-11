@@ -1,22 +1,31 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {checkToken} from "./js/checkToken";
+import {setAuthTokenStatus} from "../../store/actions";
 
 
 function MainPage() {
+    const dispatch = useDispatch()
     
-    // Получу имя пользователя
-    const {name} = useSelector(store => store.user)
+    // Получу статус токена
+    const {authTokenStatus} = useSelector(store => store.user)
     
-    // Если имени нет, то пользователь еще не вошёл, перенаправить на страницу входа
-    if(!name) {
-        return <Redirect to='/enter' />
+    // Если authTokenStatus равен нулю, то не понятно есть ли в браузере токен и верен ли он.
+    // Поэтому проверю.
+    if(authTokenStatus === 0) {
+        checkToken().then((status) => {
+            dispatch( setAuthTokenStatus(status) )
+        })
         
+        return 'IndexPage'
     }
     
-    // Если имя есть, значит пользователь вошёл. Перенаправить на страницу заметок
+    // Если токена нет или он неверный, то пользователь еще не вошёл, перенаправить на страницу входа
+    if(authTokenStatus === 1) return <Redirect to='/enter' />
+    
+    // Есть правильный токен. Перенаправить на страницу заметок.
     return <Redirect to='/notes' />
-    // return 'IndexPage'
 }
 
 export default MainPage

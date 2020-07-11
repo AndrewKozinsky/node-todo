@@ -16,7 +16,7 @@ import {setAuthTokenStatus} from "../../../../store/actions";
 
 
 // Форма регистрации нового пользователя
-function EnterForm() {
+function RegForm() {
     
     const dispatch = useDispatch()
     
@@ -29,13 +29,11 @@ function EnterForm() {
     // Переменная где будет храниться уведомление
     const [notification, setNotification] = useState(null)
     
-    
     // Если сервер сообщит об ошибке, то будет вызван setServerErr() и в serverErrText занеётся текст ошибки.
     // А ошибка есть, то она будет отрисована
     let serverError = serverErrText
         ? <Error text={serverErrText} indent='3' />
         : null
-    
     
     // Если authTokenStatus равен нулю, то не понятно есть ли в браузере токен и верен ли он. Поэтому проверю.
     if(authTokenStatus === 0) {
@@ -43,7 +41,7 @@ function EnterForm() {
             dispatch( setAuthTokenStatus(status) )
         })
     }
-
+    
     // Если токен действителен или в Хранилище есть имя пользователя, то сделать переадресацию на страницу заметок.
     if(authTokenStatus === 2 || name) return <Redirect to='/notes'/>
     
@@ -54,7 +52,7 @@ function EnterForm() {
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Log in' />
+            <FormHeader text='Sign up' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -66,12 +64,11 @@ function EnterForm() {
             {serverError}
     
             <div className={s.bottomPart}>
-                <p>Are you a new user? <Link to='/reg'>Sign up.</Link></p>
-                <p>Don't remember password? <Link to='/password-reset'>Reset password.</Link></p>
+                <p>Do you have an account? <Link to='/enter'>Sign in.</Link></p>
             </div>
         </div>
     )
 }
 
 
-export default EnterForm
+export default RegForm

@@ -7,6 +7,36 @@ const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 const {createSendToken} = require('./authToken');
 
+// Функция проверяющая правильность токена. Токен передаётся в заголовке запроса.
+exports.checkToken = async (req, res, next) => {
+    let token
+    
+    if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1]
+    } else if(req.cookie && req.cookie.authToken) {
+        token = req.cookie.authToken
+    }
+    
+    // Если токен не передан, то возвратить false
+    if(!token) return res.status(200).json(false)
+    
+    // Расшифрую JWT и получу payload
+    const decoded = await promisify( jwt.verify )(token, process.env.JWT_SECRET)
+    
+    // Получить пользователя
+    const currentUser = await User.findById(decoded.id)
+    
+    // Если пользователь не найден, то вернуть false
+    if(!currentUser) return res.status(200).json(false)
+    
+    // Если пароль изменён, то вернуть false
+    if(currentUser.changedPasswordAfter(decoded.iat)) {
+        return res.status(200).json(false)
+    }
+    
+    // Если все проверки прошли мимо, то вернуть true —— токен верен
+    return res.status(200).json(true)
+}
 
 /**
  * Функция отправляющая письмо со ссылкой подтверждения почты
@@ -24,6 +54,8 @@ const sendEmailAddressConfirmLetter = async (req, email, confirmToken) => {
         text: `Go to ${confirmUrl} to confirm your email.`,
         html: `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
     })
+    
+    // TODO Реализуй отправку на настоящую почту.
 }
 
 
@@ -35,8 +67,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1]
-    } else if(req.cookie && req.cookie.jwt) {
-        token = req.cookie.jwt
+    } else if(req.cookie && req.cookie.authToken) {
+        token = req.cookie.authToken
     }
     
     // Если токен не передан, то бросить ошибку
@@ -68,7 +100,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     
     // Поставить в req.user данные пользователя
     req.user = currentUser;
-    console.log(currentUser);
     
     next();
 })
@@ -95,14 +126,10 @@ exports.signUp = catchAsync(async (req, res, next) => {
     // Убрать пароль и токен подтверждения почты.
     newUser.password = undefined;
     newUser.emailConfirmToken = undefined;
+    newUser.__v = undefined;
     
     // Отправить данные пользователя
-    res.status(200).json({
-        status: 'success',
-        data: {
-            user: newUser
-        }
-    })
+    createSendToken(newUser, res)
 })
 
 
@@ -134,7 +161,7 @@ exports.confirmEmail = catchAsync(async (req, res, next) => {
 // Вход пользователя
 exports.logIn = catchAsync(async (req, res, next) => {
     
-    // Получу почту и пароль из теле запроса
+    // Получу почту и пароль из тела запроса
     let {email, password} = req.body;
     
     // Если почту или пароль не передали, то попросить их ввести и завершить функцию
@@ -150,7 +177,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
     // Если пользователь не найден или пароли не совпадают, то бросить ошибку.
     if(!user || !await user.correctPassword(password, user.password)) {
         return next(
-            new AppError('Incorrect email or password')
+            new AppError('Incorrect email or password', 400)
         )
     }
     
@@ -168,7 +195,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 
 // Выход пользователя
 exports.logOut = (req, res, next) => {
-    res.cookie('jwt', 'loggedout', {
+    res.cookie('authToken', 'loggedout', {
         expires: new Date(Date.now() + 5 * 1000),
         httpOnly: true
     })

@@ -11,6 +11,17 @@ export function setUser(state, action) {
     return copyState
 }
 
+export function setAuthTokenStatus(state, action) {
+    const copyState = {...state}
+    const copyUser = {...copyState.user}
+    
+    copyUser.authTokenStatus = action.status
+    
+    copyState.user = copyUser
+    
+    return copyState
+}
+
 export function addNote(state, action) {
     const copyState = {...state}
     const copyNotes = [...copyState.notes]

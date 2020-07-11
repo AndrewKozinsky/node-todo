@@ -1,27 +1,38 @@
 import React from "react";
 import * as Yup from "yup";
-import browserConfig from '../../../../browserConfig'
+import browserConfig from '../../../../../browserConfig'
 import {Form} from "formik";
-import FieldsDividerWrapper from "../../../../components/formContainers/fieldsDividerWrapper";
-import TextInput from "../../../../components/formElements/textInput";
-import Button from "../../../../components/formElements/button";
-import {setUser} from "../../../../store/actions";
+import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
+import TextInput from "../../../../../components/formElements/textInput";
+import Button from "../../../../../components/formElements/button";
+import {setUser} from "../../../../../store/actions";
+import Notification from "../../../../../components/various/notification";
 
 
 // Начальные значения полей формы
 export const initialValues = {
+    name: '',
     email: '',
-    password: ''
+    password: '',
+    passwordConfirm: ''
 }
 
 // Проверка полей формы
 export const validationSchema = Yup.object({
+    name: Yup.string()
+        .required('This field is required')
+        .min(1, 'Must be 1 characters or more'),
     email: Yup.string()
         .required('This field is required')
         .email('Invalid email address'),
     password: Yup.string()
         .required('This field is required')
-        .min(4, 'Must be 4 characters or more')
+        .min(4, 'Must be 4 characters or more'),
+    passwordConfirm: Yup.string()
+        .oneOf(
+            [Yup.ref("password")],
+            "Both password need to be the same"
+        )
 })
 
 
@@ -41,11 +52,39 @@ export function createForm(formik, setServerErr) {
     return (
         <Form onChange={() => setServerErr(null)}>
             <FieldsDividerWrapper indent='2'>
-                <TextInput label='Email' type='email' name='email' disabled={isDisabled} autoComplete="email" />
+                <TextInput
+                    label='Name'
+                    type='text'
+                    name='name'
+                    disabled={isDisabled}
+                    autoComplete="username" />
             </FieldsDividerWrapper>
             
             <FieldsDividerWrapper indent='2'>
-                <TextInput label='Password' type='password' name='password' disabled={isDisabled} autoComplete="current-password" />
+                <TextInput
+                    label='Email'
+                    type='email'
+                    name='email'
+                    disabled={isDisabled}
+                    autoComplete="email" />
+            </FieldsDividerWrapper>
+            
+            <FieldsDividerWrapper indent='2'>
+                <TextInput
+                    label='Password'
+                    type='password'
+                    name='password'
+                    disabled={isDisabled}
+                    autoComplete="new-password" />
+            </FieldsDividerWrapper>
+            
+            <FieldsDividerWrapper indent='2'>
+                <TextInput
+                    label='Confirm Password'
+                    type='password'
+                    name='passwordConfirm'
+                    disabled={isDisabled}
+                    autoComplete="new-password" />
             </FieldsDividerWrapper>
             
             <SubmitBtn formik={formik} />
@@ -89,11 +128,11 @@ function SubmitBtn({formik}) {
  * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
  * @param {Function} dispatch — диспатчер экшен-функции.
  */
-export async function onSubmitHandler(values, setServerErr, dispatch) {
+export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
     
     // По какому адресу буду делать запрос на вход пользователя
     const {serverOrigin, isDevelopment} = browserConfig
-    const apiUrl = serverOrigin + '/api/v1/users/login'
+    const apiUrl = serverOrigin + '/api/v1/users/signup'
     
     // Параметры запроса
     const options = {
@@ -107,8 +146,25 @@ export async function onSubmitHandler(values, setServerErr, dispatch) {
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.log(err))
-    /*
-    В serverRes будет или объект с успехом:
+    
+    console.log(serverRes);
+    
+    /* Если в serverRes будет объект с ошибкой про неверные данные от пользователя если указан не верная почта или пароль или они вообще не переданы,
+    то показать сообщение об ошибке:
+    {
+        "status": "fail",
+        "error": {
+            "statusCode": 400,
+            "isOperational": true,
+            "message": "Incorrect email or password"
+        },
+        "message": "Please provide email and password.",
+    }*/
+    if(serverRes.status === 'error' && serverRes.error.statusCode === 400) {
+        setServerErr(serverRes.error.message)
+    }
+    
+    /* Если в serverRes будет объект с успешным статусом, то показать уведомление с просьбой подтвердить почту:
     {
         "status": "success",
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6...",
@@ -118,44 +174,11 @@ export async function onSubmitHandler(values, setServerErr, dispatch) {
                 "email": "andkozinskiy@yandex.ru",
             }
         }
-    }
-    Или объект с ошибкой про неверные данные от пользователя:
-    {
-        "status": "fail",
-        "error": {
-            "statusCode": 400,
-            "status": "fail",
-            "isOperational": true
-        },
-        "message": "Please provide email and password.",
-    }
-    Или 500 ошибка если данные вообще не переданы (пользователю удалось отправить форму без проверки на клиенте)
-    {
-        "status": "error",
-        "error": {
-            "statusCode": 500,
-            "status": "error",
-            "isOperational": true
-        },
-        "message": "Incorrect email or password",
-    }
-    */
-    
-    // Если успешный ответ
+    }*/
     if(serverRes.status === 'success') {
-        // Получить данные пользователя
-        const userData = serverRes.data.user
-        
-        // Если нахожусь в режиме разработке, то поставить токен в LocalStorage
-        if(isDevelopment) {
-            localStorage.setItem('authToken', serverRes.token)
-        }
-        
-        // Поставить их в Хранилище
-        dispatch(setUser(userData.name, userData.email))
-    }
-    // В противном случае передать текст ошибки функции показывающую ошибку.
-    else {
-        setServerErr(serverRes.message)
+        const mailService = 'https://' + values.email.split('@')[1]
+        setNotification(
+            <Notification>A letter with a link has been sent to your <a href={mailService}>email</a>. Click on it to log in your account.</Notification>
+        )
     }
 }

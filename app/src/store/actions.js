@@ -7,6 +7,13 @@ export function setUser(name, email) {
     }
 }
 
+export function setAuthTokenStatus(status) {
+    return {
+        type: 'SET_AUTH_TOKEN_STATUS',
+        status
+    }
+}
+
 export function addNote(text) {
     return {
         type: 'ADD_NOTE',

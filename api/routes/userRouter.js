@@ -3,6 +3,9 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 
+// Проверка токена на правильность
+router.post('/checkToken', authController.checkToken)
+
 // Регистрация пользователя
 router.post('/signup', authController.signUp)
 

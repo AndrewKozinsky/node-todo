@@ -27,7 +27,7 @@ const signToken = id => {
 const createSendToken = (user, res, statusCode = 200) => {
     const token = signToken(user._id)
     
-    // Если нахожусь в режиме публикации, то отправлять куку с токеном
+    // Если нахожусь в режиме публикации, то к ответу добавить куку с токеном
     if(process.env.NODE_ENV === 'production') {
         const cookieOptions = {
             expires: new Date(Date.now() + parseInt(process.env.JWT_EXPIRES_IN) * 24 * 60 * 60 * 1000),
@@ -35,17 +35,17 @@ const createSendToken = (user, res, statusCode = 200) => {
             secure: true
         }
     
-        res.cookie('jwt', token, cookieOptions)
+        res.cookie('authToken', token, cookieOptions)
     }
-    
-    // Уберу пароль
-    user.password = undefined;
     
     res.status(statusCode).json({
         status: 'success',
         token,
         data: {
-            user
+            user: {
+                name: user.name,
+                email: user.email
+            }
         }
     })
 }
