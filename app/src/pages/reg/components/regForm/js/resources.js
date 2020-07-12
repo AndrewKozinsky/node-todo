@@ -6,6 +6,7 @@ import FieldsDividerWrapper from "../../../../../components/formContainers/field
 import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
 import Notification from "../../../../../components/various/notification";
+import Error from "../../../../../components/formElements/error";
 
 
 // Начальные значения полей формы
@@ -125,6 +126,7 @@ function SubmitBtn({formik}) {
  * Обработчик отправки формы
  * @param {Object} values — объект с введёнными значениями в поля формы
  * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
+ * @param {Function} setNotification — функция отрисовывающая уведомление.
  * @param {Function} dispatch — диспатчер экшен-функции.
  */
 export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
@@ -160,7 +162,9 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         "message": "Please provide email and password.",
     }*/
     if(serverRes.status === 'error' && serverRes.error.statusCode === 400) {
-        setServerErr(serverRes.error.message)
+        setServerErr(
+            <Error text={serverRes.error.message} indent='3' />
+        )
     }
     
     /* Если в serverRes будет объект с успешным статусом, то показать уведомление с просьбой подтвердить почту:

@@ -19,39 +19,18 @@ function ResetPasswordForm() {
     
     const dispatch = useDispatch()
     
+    // Получу из адресной строки токен сброса пароля
     let { token } = useParams();
     
-    // Получу имя пользователя и статус токена авторизации
-    const {name, authTokenStatus} = useSelector(state => state.user)
-    
-    // Переменная где будет хранится сообщение об ошибке с сервера
-    let [serverErrText, setServerErr] = useState(null)
+    // Сообщение об ошибке с сервера
+    let [serverErr, setServerErr] = useState(null)
     
     // Нужно ли делать переадресацию на страницу заметок
     const [goToNotes, setGoToNotes] = useState(false)
     
     if(goToNotes) {
-        console.log('YYYES');
         return <Redirect to='/notes'/>
     }
-        
-        
-        // Если сервер сообщит об ошибке, то будет вызван setServerErr() и в serverErrText занеcётся текст ошибки.
-    // А ошибка есть, то она будет отрисована
-    let serverError = serverErrText
-        ? <Error text={serverErrText} indent='3' />
-        : null
-    
-    
-    // Если authTokenStatus равен нулю, то не понятно есть ли в браузере токен и верен ли он. Поэтому проверю.
-    if(authTokenStatus === 0) {
-        checkToken().then((status) => {
-            dispatch( setAuthTokenStatus(status) )
-        })
-    }
-
-    // Если токен действителен или в Хранилище есть имя пользователя, то сделать переадресацию на страницу заметок.
-    if(authTokenStatus === 2 || name) return <Redirect to='/notes' />
     
     
     // Отрисовываемая форма
@@ -66,7 +45,7 @@ function ResetPasswordForm() {
                 { formik => createForm(formik, setServerErr) }
             </Formik>
             
-            {serverError}
+            {serverErr}
         </div>
     )
 }

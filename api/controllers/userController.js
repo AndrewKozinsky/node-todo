@@ -45,6 +45,18 @@ exports.changeMyEmail = catchAsync(async (req, res, next) => {
     })
 })
 
+// Функция отправляет данные пользователя по его токену
+exports.getMe = catchAsync(async (req, res, next) => {
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            user: {
+                email: req.user.email,
+                name: req.user.name
+            }
+        }
+    })
+})
 
 // Функция обновляет данные пользователя
 exports.updateMe = catchAsync(async (req, res, next) => {

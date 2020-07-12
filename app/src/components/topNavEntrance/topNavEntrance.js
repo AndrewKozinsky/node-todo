@@ -17,15 +17,18 @@ function TopNavEntrance() {
 
 
 function TopNavLink({ label, to, i }) {
-    let match = useRouteMatch({
-        path: to
-    });
+    let match = useRouteMatch(to)
     
-    if(match) {
-        return <Button tag='a' href={to} text={label} i={i} />
+    const attrs = {
+        tag: 'a',
+        href: to,
+        text: label,
+        i
     }
     
-    return <Button tag='a' href={to} text={label} mode1={true} i={i} />
+    if(!match) attrs.mode1 = true
+    
+    return <Button {...attrs} />
 }
 
 export default TopNavEntrance

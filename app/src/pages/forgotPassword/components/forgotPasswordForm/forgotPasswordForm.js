@@ -20,32 +20,11 @@ function ForgotPasswordForm() {
     
     const dispatch = useDispatch()
     
-    // Получу имя пользователя и статус токена авторизации
-    const {name, authTokenStatus} = useSelector(state => state.user)
+    // Сообщение об ошибке с сервера
+    let [serverErr, setServerErr] = useState(null)
     
-    // Переменная где будет хранится сообщение об ошибке с сервера
-    let [serverErrText, setServerErr] = useState(null)
-    
-    // Переменная где будет храниться уведомление
+    // Уведомление
     const [notification, setNotification] = useState(null)
-    
-    
-    // Если сервер сообщит об ошибке, то будет вызван setServerErr() и в serverErrText занеётся текст ошибки.
-    // А ошибка есть, то она будет отрисована
-    let serverError = serverErrText
-        ? <Error text={serverErrText} indent='3' />
-        : null
-    
-    
-    // Если authTokenStatus равен нулю, то не понятно есть ли в браузере токен и верен ли он. Поэтому проверю.
-    if(authTokenStatus === 0) {
-        checkToken().then((status) => {
-            dispatch( setAuthTokenStatus(status) )
-        })
-    }
-
-    // Если токен действителен или в Хранилище есть имя пользователя, то сделать переадресацию на страницу заметок.
-    if(authTokenStatus === 2 || name) return <Redirect to='/notes'/>
     
     // Если есть уведомление, то отрисовать уведомленин.
     if(notification) return notification
@@ -62,8 +41,8 @@ function ForgotPasswordForm() {
             >
                 { formik => createForm(formik, setServerErr) }
             </Formik>
-            
-            {serverError}
+    
+            {serverErr}
         </div>
     )
 }

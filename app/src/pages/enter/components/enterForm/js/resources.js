@@ -5,8 +5,9 @@ import {Form} from "formik";
 import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
 import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
-import {setUser} from "../../../../../store/actions";
+import {setAuthTokenStatus, setUser} from "../../../../../store/actions";
 import Notification from "../../../../../components/various/notification";
+import Error from "../../../../../components/formElements/error";
 
 
 // Начальные значения полей формы
@@ -139,7 +140,9 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         "message": "Please provide email and password.",
     }*/
     if(serverRes.status === 'fail' && serverRes.error.statusCode === 400) {
-        setServerErr(serverRes.error.message)
+        setServerErr(
+            <Error text={serverRes.error.message} indent='3' />
+        )
     }
     
     /* Если всё верно, то в serverRes будет объект с успехом:
@@ -165,5 +168,6 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         
         // Поставить их в Хранилище
         dispatch(setUser(userData.name, userData.email))
+        dispatch(setAuthTokenStatus(2))
     }
 }

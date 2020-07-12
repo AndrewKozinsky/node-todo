@@ -5,8 +5,8 @@ import {Form} from "formik";
 import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
 import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
-import {setUser} from "../../../../../store/actions";
 import Notification from "../../../../../components/various/notification";
+import Error from "../../../../../components/formElements/error";
 
 
 // Начальные значения полей формы
@@ -116,7 +116,9 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         },
     }*/
     if(serverRes.status === 'fail' && serverRes.error.statusCode === 404) {
-        setServerErr(serverRes.error.message)
+        setServerErr(
+            <Error text={serverRes.error.message} indent='3' />
+        )
     }
     
     /* Если всё верно, то в serverRes будет объект с успехом:

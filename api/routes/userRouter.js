@@ -31,6 +31,10 @@ router.patch('/resetPassword/:token', authController.resetPassword)
 router.route('/myEmail')
     .put(authController.protect, userController.changeMyEmail)
 
+// Получение данных пользователя
+router.route('/me')
+    .get(authController.protect, userController.getMe)
+
 // Обновление данных пользователя
 router.route('/me')
     .patch(authController.protect, userController.updateMe)

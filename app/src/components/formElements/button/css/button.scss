@@ -1,7 +1,7 @@
 @import "../../../app/css/variables";
 
 
-:global .btn {
+:global .btn  {
     display: inline-block;
     font-size: 1.6rem;
     line-height: 2rem;
@@ -39,6 +39,10 @@
     }
 }
 
+:global a.btn {
+    color: $text-color;
+}
+
 :global .btn--mode-1 {
     background-color: transparent;
 
@@ -52,11 +56,26 @@
     border-radius: $radius-2;
 }
 
+:global .btn__text {
+    border-bottom: 1px solid transparent;
+}
+
+:global a.btn .btn__text {
+    border-bottom-color: rgba($text-color, .2);
+    transition: border-bottom-color .2s;
+}
+
+:global a.btn:hover .btn__text {
+    border-bottom-color: rgba($text-color, .3);
+}
+
+
 :global .btn__sign {
     display: inline-block;
     width: 18px;
     height: 18px;
     vertical-align: text-bottom;
+    margin-right: 4px;
 }
 :global .btn__sign--person {
     background-image: url("../svg/person.svg");
@@ -72,6 +91,9 @@
 }
 :global .btn__sign--close {
     background-image: url("../svg/close.svg");
+}
+:global .btn__sign--notes {
+    background-image: url("../svg/notes.svg");
 }
 
 :global .btn__counter {

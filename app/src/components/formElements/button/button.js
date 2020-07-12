@@ -7,25 +7,34 @@ import './css/spinner.scss'
 function Button(props) {
     const {
         text = `Text didn't pass`, // Текст на кнопке
-        i,
         counter, // Счётчик на кнопке
+        type, // Тип кнопки. По-умолчанию button.
+        href,
+        sign, // Значёк на кнопке
+        mode1,
+        mode2,
+        onClick,
+        i, // Значение атрибута key
         disabled = false, // Заблокирована ли кнопка
     } = props
     
     const attrs = {}
     
     // Тип кнопки
-    attrs.type = props.type ? props.type : 'button'
-    if(props.href) delete attrs.type
+    attrs.type = type || 'button'
+    if(href) delete attrs.type
     
     // Формирование классов
     let cls = 'btn'
-    if(props.mode1) cls += ' btn--mode-1'
-    if(props.mode2) cls += ' btn--mode-2'
+    if(mode1) cls += ' btn--mode-1'
+    if(mode2) cls += ' btn--mode-2'
     attrs.className = cls
     
     // Аттрибут href
-    if(props.href) attrs.to = props.href
+    if(href) attrs.to = href
+    
+    // Атрибут onClick
+    if(onClick) attrs.onClick = onClick
     
     // Аттрибут disabled
     if(disabled) attrs.disabled = true
@@ -33,15 +42,20 @@ function Button(props) {
     if(i) attrs.key = i
     
     // Контент
-    const signEl = createSign(props.sign)
+    const signEl = createSign(sign)
     const counterEl = <span className='btn__counter' key='b'>{counter}</span>
-    const innerContent = [signEl, text, counterEl]
+    const innerContent = [
+        signEl,
+        <span className='btn__text' key='f'>{text}</span>,
+        counterEl
+    ]
     
     
     return  props.tag === 'a'
         ? <Link {...attrs}>{innerContent}</Link>
         : <button {...attrs}>{innerContent}</button>
 }
+
 
 // type —- значёк на кнопке. Значения: person, exit, check-all, sun, close, spinner
 function createSign(type) {
@@ -66,11 +80,15 @@ function createSign(type) {
         case 'close':
             cls += 'btn__sign--close'
             break
+        case 'notes':
+            cls += 'btn__sign--notes'
+            break
     }
     
     return <span className={cls} key='a' />
 }
 
+// Функция создающая элемент спиннера на кнопке
 function createSpinner() {
     return (
         <div className='btnSpinnerWrapper' key='h'>

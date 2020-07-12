@@ -7,6 +7,7 @@ import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
 import {setUser} from "../../../../../store/actions";
 import Notification from "../../../../../components/various/notification";
+import Error from "../../../../../components/formElements/error";
 
 
 // Начальные значения полей формы
@@ -92,6 +93,7 @@ function SubmitBtn({formik}) {
  * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
  * @param {String} token — токен сброса пароля
  * @param {Function} dispatch — диспатчер экшен-функции.
+ * @param {Function} setGoToNotes — если в функцию передать true, то браузер перейдёт на страницу с заметками
  */
 export async function onSubmitHandler(values, setServerErr, token, dispatch, setGoToNotes) {
     
@@ -134,7 +136,9 @@ export async function onSubmitHandler(values, setServerErr, token, dispatch, set
     то показать сообщение об ошибке:
     */
     if(serverRes.error.statusCode === 400) {
-        setServerErr(serverRes.error.message)
+        setServerErr(
+            <Error text={serverRes.error.message} indent='3' />
+        )
     }
     
     console.log('Close');
