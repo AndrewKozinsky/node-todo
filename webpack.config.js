@@ -30,8 +30,10 @@ module.exports = (env = {}) => {
             jsConfig = Object.assign(jsConfig, {
                 enforce: 'pre',
                 use: [
-                    'babel-loader',
-                    'source-map-loader'
+                    { loader: 'babel-loader' },
+                    {
+                        loader: 'source-map-loader',
+                    }
                 ]
             })
         }
@@ -148,9 +150,10 @@ module.exports = (env = {}) => {
             ]
         },
         plugins: managePlugins(),
-        devtool: 'inline-source-map',
+        devtool: 'eval',
         devServer: {
             port: 8080,
+            publicPath: '/',
             historyApiFallback: true
         }
     }

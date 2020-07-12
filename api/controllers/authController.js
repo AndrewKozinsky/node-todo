@@ -242,12 +242,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     
     if(!user) {
         return next(
-            new AppError('There is no user with email address.', 404)
+            new AppError('There is no user with this email address', 404)
         )
     }
     
     // Создать токен сброса
-    const resetToken = user.createPasswordResetToken();
+    const resetToken = user.createPasswordResetToken()
     
     await user.save({
         validateBeforeSave: false
@@ -267,7 +267,9 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     
         res.status(200).json({
             status: 'success',
-            message: 'Email has sent!'
+            data: {
+                message: 'Email has been sent!'
+            }
         })
     }
     catch (err) {

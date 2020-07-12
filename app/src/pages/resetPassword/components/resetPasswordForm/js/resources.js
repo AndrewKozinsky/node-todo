@@ -5,31 +5,24 @@ import {Form} from "formik";
 import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
 import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
+import {setUser} from "../../../../../store/actions";
 import Notification from "../../../../../components/various/notification";
 
 
 // Начальные значения полей формы
 export const initialValues = {
-    name: '',
-    email: '',
     password: '',
     passwordConfirm: ''
 }
 
 // Проверка полей формы
 export const validationSchema = Yup.object({
-    name: Yup.string()
-        .required('This field is required')
-        .min(1, 'Must be 1 characters or more'),
-    email: Yup.string()
-        .required('This field is required')
-        .email('Invalid email address'),
     password: Yup.string()
         .required('This field is required')
         .min(4, 'Must be 4 characters or more'),
     passwordConfirm: Yup.string()
         .oneOf(
-            [Yup.ref("password")],
+            [Yup.ref('password')],
             "Both passwords need to be the same"
         )
 })
@@ -51,39 +44,11 @@ export function createForm(formik, setServerErr) {
     return (
         <Form onChange={() => setServerErr(null)}>
             <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Name'
-                    type='text'
-                    name='name'
-                    disabled={isDisabled}
-                    autoComplete="username" />
+                <TextInput label='Password' type='password' name='password' disabled={isDisabled} autoComplete="new-password" />
             </FieldsDividerWrapper>
             
             <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Email'
-                    type='email'
-                    name='email'
-                    disabled={isDisabled}
-                    autoComplete="email" />
-            </FieldsDividerWrapper>
-            
-            <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Password'
-                    type='password'
-                    name='password'
-                    disabled={isDisabled}
-                    autoComplete="new-password" />
-            </FieldsDividerWrapper>
-            
-            <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Confirm Password'
-                    type='password'
-                    name='passwordConfirm'
-                    disabled={isDisabled}
-                    autoComplete="new-password" />
+                <TextInput label='Confirm password' type='password' name='passwordConfirm' disabled={isDisabled} autoComplete="new-password" />
             </FieldsDividerWrapper>
             
             <SubmitBtn formik={formik} />
@@ -123,19 +88,20 @@ function SubmitBtn({formik}) {
 
 /**
  * Обработчик отправки формы
- * @param {Object} values — объект с введёнными значениями в поля формы
+ * @param {Object} values — объект с введёнными значениями в поля формы.
  * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
+ * @param {String} token — токен сброса пароля
  * @param {Function} dispatch — диспатчер экшен-функции.
  */
-export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
+export async function onSubmitHandler(values, setServerErr, token, dispatch, setGoToNotes) {
     
     // По какому адресу буду делать запрос на вход пользователя
     const {serverOrigin, isDevelopment} = browserConfig
-    const apiUrl = serverOrigin + '/api/v1/users/signup'
+    const apiUrl = serverOrigin + '/api/v1/users/resetPassword/' + token
     
     // Параметры запроса
     const options = {
-        method: 'POST',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values)
     }
@@ -145,39 +111,47 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.log(err))
-    
-    console.log(serverRes);
-    
-    /* Если в serverRes будет объект с ошибкой про неверные данные от пользователя если указан не верная почта или пароль или они вообще не переданы,
-    то показать сообщение об ошибке:
+    console.log(serverRes)
+    // debugger
+    /*
+    Если в serverRes будет объект с ошибкой про испорченный токен...
     {
         "status": "fail",
         "error": {
             "statusCode": 400,
             "isOperational": true,
-            "message": "Incorrect email or password"
-        },
-        "message": "Please provide email and password.",
-    }*/
-    if(serverRes.status === 'error' && serverRes.error.statusCode === 400) {
+            "message": "Token is invalid or has expired"
+        }
+    }
+    Или про неверные пароли...
+    {
+        "status": "error",
+        "error": {
+            "statusCode": 400,
+            "message": "Invalid input data: Passwords are not equal!"
+        }
+    }
+    то показать сообщение об ошибке:
+    */
+    if(serverRes.error.statusCode === 400) {
         setServerErr(serverRes.error.message)
     }
     
-    /* Если в serverRes будет объект с успешным статусом, то показать уведомление с просьбой подтвердить почту:
-    {
-        "status": "success",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6...",
-        "data": {
-            "user": {
-                "name": "Andrew Kozinsky",
-                "email": "andkozinskiy@yandex.ru",
-            }
-        }
-    }*/
+    console.log('Close');
     if(serverRes.status === 'success') {
-        const mailService = 'https://' + values.email.split('@')[1]
-        setNotification(
-            <Notification>A letter with a link has been sent to your <a href={mailService}>email</a>. Click on it to log in your account.</Notification>
-        )
+        console.log(5555);
+        // Если нахожусь в режиме разработке, то поставить токен в LocalStorage
+        if(isDevelopment) {
+            localStorage.setItem('authToken', serverRes.token)
+        }
+    
+        // Получить данные пользователя
+        const {name, email} = serverRes.data.user
+        
+        // Поставить их в Хранилище
+        dispatch(setUser(name, email))
+    
+        // Перейти на страницу заметок
+        setGoToNotes(true)
     }
 }

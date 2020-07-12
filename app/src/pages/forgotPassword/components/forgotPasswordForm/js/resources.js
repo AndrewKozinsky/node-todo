@@ -5,33 +5,20 @@ import {Form} from "formik";
 import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
 import TextInput from "../../../../../components/formElements/textInput";
 import Button from "../../../../../components/formElements/button";
+import {setUser} from "../../../../../store/actions";
 import Notification from "../../../../../components/various/notification";
 
 
 // Начальные значения полей формы
 export const initialValues = {
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirm: ''
+    email: ''
 }
 
 // Проверка полей формы
 export const validationSchema = Yup.object({
-    name: Yup.string()
-        .required('This field is required')
-        .min(1, 'Must be 1 characters or more'),
     email: Yup.string()
         .required('This field is required')
-        .email('Invalid email address'),
-    password: Yup.string()
-        .required('This field is required')
-        .min(4, 'Must be 4 characters or more'),
-    passwordConfirm: Yup.string()
-        .oneOf(
-            [Yup.ref("password")],
-            "Both passwords need to be the same"
-        )
+        .email('Invalid email address')
 })
 
 
@@ -51,39 +38,7 @@ export function createForm(formik, setServerErr) {
     return (
         <Form onChange={() => setServerErr(null)}>
             <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Name'
-                    type='text'
-                    name='name'
-                    disabled={isDisabled}
-                    autoComplete="username" />
-            </FieldsDividerWrapper>
-            
-            <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Email'
-                    type='email'
-                    name='email'
-                    disabled={isDisabled}
-                    autoComplete="email" />
-            </FieldsDividerWrapper>
-            
-            <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Password'
-                    type='password'
-                    name='password'
-                    disabled={isDisabled}
-                    autoComplete="new-password" />
-            </FieldsDividerWrapper>
-            
-            <FieldsDividerWrapper indent='2'>
-                <TextInput
-                    label='Confirm Password'
-                    type='password'
-                    name='passwordConfirm'
-                    disabled={isDisabled}
-                    autoComplete="new-password" />
+                <TextInput label='Email' type='email' name='email' disabled={isDisabled} autoComplete="email" />
             </FieldsDividerWrapper>
             
             <SubmitBtn formik={formik} />
@@ -117,21 +72,23 @@ function SubmitBtn({formik}) {
     if(formik.isSubmitting) {
         attrs.sign = 'spinner'
     }
+    // TODO Думаю при отправке на кнопке должен писаться новый текст. Что-то вроде Sending...
     
     return <Button {...attrs} />
 }
 
 /**
  * Обработчик отправки формы
- * @param {Object} values — объект с введёнными значениями в поля формы
+ * @param {Object} values — объект с введёнными значениями в поля формы.
  * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
+ * @param {Function} setNotification — функция отрисовывающая уведомление.
  * @param {Function} dispatch — диспатчер экшен-функции.
  */
 export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
     
     // По какому адресу буду делать запрос на вход пользователя
     const {serverOrigin, isDevelopment} = browserConfig
-    const apiUrl = serverOrigin + '/api/v1/users/signup'
+    const apiUrl = serverOrigin + '/api/v1/users/forgotPassword'
     
     // Параметры запроса
     const options = {
@@ -148,36 +105,31 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
     
     console.log(serverRes);
     
-    /* Если в serverRes будет объект с ошибкой про неверные данные от пользователя если указан не верная почта или пароль или они вообще не переданы,
-    то показать сообщение об ошибке:
+    /* Если в serverRes будет объект с ошибкой 404 значит ввели незарегистрированную в базе данных почту.
+    Либо передали почту в неправильном формате. Показать сообщение об ошибке:
     {
         "status": "fail",
         "error": {
-            "statusCode": 400,
+            "statusCode": 404,
             "isOperational": true,
-            "message": "Incorrect email or password"
+            "message": "There is no user with this email address"
         },
-        "message": "Please provide email and password.",
     }*/
-    if(serverRes.status === 'error' && serverRes.error.statusCode === 400) {
+    if(serverRes.status === 'fail' && serverRes.error.statusCode === 404) {
         setServerErr(serverRes.error.message)
     }
     
-    /* Если в serverRes будет объект с успешным статусом, то показать уведомление с просьбой подтвердить почту:
+    /* Если всё верно, то в serverRes будет объект с успехом:
     {
         "status": "success",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6...",
         "data": {
-            "user": {
-                "name": "Andrew Kozinsky",
-                "email": "andkozinskiy@yandex.ru",
-            }
+            "message": "Email has been sent!"
         }
     }*/
     if(serverRes.status === 'success') {
         const mailService = 'https://' + values.email.split('@')[1]
         setNotification(
-            <Notification>A letter with a link has been sent to your <a href={mailService}>email</a>. Click on it to log in your account.</Notification>
+            <Notification>A letter with a reset password link has been sent to your <a href={mailService}>email</a>. Click on it to reset your password.</Notification>
         )
     }
 }

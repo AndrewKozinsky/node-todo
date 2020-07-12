@@ -16,7 +16,7 @@ import {setAuthTokenStatus} from "../../../../store/actions";
 
 
 // Форма регистрации нового пользователя
-function EnterForm() {
+function ForgotPasswordForm() {
     
     const dispatch = useDispatch()
     
@@ -54,7 +54,7 @@ function EnterForm() {
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Log in' />
+            <FormHeader text='Reset Password' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -64,14 +64,9 @@ function EnterForm() {
             </Formik>
             
             {serverError}
-    
-            <div className={s.bottomPart}>
-                <p>Are you a new user? <Link to='/reg'>Sign up.</Link></p>
-                <p>Don't remember password? <Link to='/forgot-password'>Reset password.</Link></p>
-            </div>
         </div>
     )
 }
 
 
-export default EnterForm
+export default ForgotPasswordForm

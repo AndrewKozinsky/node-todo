@@ -10,13 +10,13 @@ import {
     Link
 } from "react-router-dom";
 
-import MainPage from "../../pages/main/mainPage"
-import RegPage from "../../pages/reg/regPage"
-import EnterPage from "../../pages/enter/enterPage"
-import PasswordResetPage from "../../pages/passwordReset/passwordResetPage"
-import ChangePasswordPage from "../../pages/changePassword/changePasswordPage"
-import NotesPage from "../../pages/notes/notesPage"
-import UserPage from "../../pages/user/userPage"
+import MainPage from "../../pages/main"
+import RegPage from "../../pages/reg"
+import EnterPage from "../../pages/enter"
+import ForgotPasswordPage from "../../pages/forgotPassword"
+import ResetPasswordPage from "../../pages/resetPassword"
+import NotesPage from "../../pages/notes"
+import UserPage from "../../pages/user"
 
 
 
@@ -45,11 +45,11 @@ const App = () => {
                     <Route path='/enter'>
                         <EnterPage />
                     </Route>
-                    <Route path='/password-reset'>
-                        <PasswordResetPage />
+                    <Route path='/forgot-password'>
+                        <ForgotPasswordPage />
                     </Route>
-                    <Route path='/change-password'>
-                        <ChangePasswordPage />
+                    <Route path='/reset-password/:token'>
+                        <ResetPasswordPage />
                     </Route>
                     <Route path='/notes'>
                         <NotesPage />
