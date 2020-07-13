@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Formik} from "formik";
 import {Link, Redirect} from "react-router-dom";
 import s from './css/form.scss'
-import FormHeader from "../../../../components/formElements/formHeader";
+import Header from "../../../../components/header";
 import {useDispatch, useSelector} from "react-redux";
 import {
     initialValues,
@@ -30,7 +30,7 @@ function EnterForm() {
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Log in' />
+            <Header text='Log in' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

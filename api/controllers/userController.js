@@ -58,6 +58,7 @@ exports.getMe = catchAsync(async (req, res, next) => {
     })
 })
 
+
 // Функция обновляет данные пользователя
 exports.updateMe = catchAsync(async (req, res, next) => {
     // Если передают пароль или почту, то ответить, что этот маршрут не для изменения пароля и почты
@@ -71,13 +72,14 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     // Пока разрешно только менять имя.
     const filteredBody = filterObj(req.body, 'name')
     
+    
     const updatedUser = await User.findByIdAndUpdate(
         req.user.id,
         filteredBody,
         {new: true, runValidators: true}
-    )
+    ).select('-emailConfirmToken -passwordChangedAt -__v -_id')
     
-    res.status(401).json({
+    res.status(200).json({
         status: 'success',
         data: {
             user: updatedUser

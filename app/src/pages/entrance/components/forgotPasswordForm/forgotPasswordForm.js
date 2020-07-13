@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Formik} from "formik";
 import {Link, Redirect} from "react-router-dom";
 import s from './css/form.scss'
-import FormHeader from "../../../../components/formElements/formHeader";
+import Header from "../../../../components/header";
 import Error from "../../../../components/formElements/error";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -33,7 +33,7 @@ function ForgotPasswordForm() {
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Reset Password' />
+            <Header text='Reset Password' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}

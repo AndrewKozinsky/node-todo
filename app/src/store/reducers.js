@@ -3,8 +3,8 @@ export function setUser(state, action) {
     const copyState = {...state}
     const copyUser = {...copyState.user}
     
-    copyUser.name = action.name
-    copyUser.email = action.email
+    if(action.name) copyUser.name = action.name
+    if(action.email) copyUser.email = action.email
     
     copyState.user = copyUser
     

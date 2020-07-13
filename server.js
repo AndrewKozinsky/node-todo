@@ -19,6 +19,7 @@ const DB = process.env.DATABASE
 
 // Настройка Монгуса чтобы не ругался
 mongoose.set('useCreateIndex', true)
+// mongoose.set('useFindAndModify', false)
 
 // Настройка соединения с MongoDB
 mongoose.connect(DB, {

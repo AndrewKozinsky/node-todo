@@ -25,12 +25,13 @@ function TopNav() {
 
 // Компонент подписи про статус сохранения
 function SavedStatus() {
-    // Если я нахожусь не на странице /notes, то компонент ничего не возвращает
-    let match = useRouteMatch('/notes');
-    if(!match) return null
     
     // Статус сохранены ли заметки или еще нет
     const {areNotesSaved} = useSelector(state => state.notes)
+    
+    // Если я нахожусь не на странице /notes, то компонент ничего не возвращает
+    let match = useRouteMatch('/notes');
+    if(!match) return null
     
     // В зависимости от статуса сделаю различные классы
     let cls = s.saveStatus + ' '

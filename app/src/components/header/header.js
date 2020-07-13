@@ -1,8 +1,8 @@
 import React from 'react'
-import s from './css/formHeader.scss'
+import s from './css/header.scss'
 
 
-function FormHeader(props) {
+function Header(props) {
     const {
         tag = 'h2',
         type = 'h2',
@@ -20,4 +20,4 @@ function FormHeader(props) {
     return <Tag className={cls}>{text}</Tag>
 }
 
-export default FormHeader
+export default Header
