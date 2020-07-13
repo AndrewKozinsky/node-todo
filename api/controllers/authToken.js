@@ -9,7 +9,6 @@ const User = require('../mongooseModels/user');
  * @returns {undefined|*}
  */
 const signToken = id => {
-    // console.log('User id is', user);
     return jwt.sign(
         { id },
         process.env.JWT_SECRET,

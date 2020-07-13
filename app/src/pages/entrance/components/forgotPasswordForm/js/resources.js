@@ -103,7 +103,6 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         .then(res => res)
         .catch(err => console.log(err))
     
-    console.log(serverRes);
     
     /* Если в serverRes будет объект с ошибкой 404 значит ввели незарегистрированную в базе данных почту.
     Либо передали почту в неправильном формате. Показать сообщение об ошибке:

@@ -46,7 +46,7 @@ exports.checkToken = async (req, res, next) => {
  * @param {String} confirmToken — токен подтверждения почты
  * @returns {Promise<void>}
  */
-exports.sendEmailAddressConfirmLetter = async (req, email, confirmToken) => {
+async function sendEmailAddressConfirmLetter(req, email, confirmToken) {
     const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
     
     await sendEmail({
@@ -58,7 +58,7 @@ exports.sendEmailAddressConfirmLetter = async (req, email, confirmToken) => {
     
     // TODO Реализуй отправку на настоящую почту.
 }
-
+exports.sendEmailAddressConfirmLetter = sendEmailAddressConfirmLetter
 
 // Функция защищающая маршрут от неавторизованных пользователей.
 // Если пользователь отправил токен, то программа запускает следующий middleware.
@@ -110,7 +110,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.signUp = catchAsync(async (req, res, next) => {
     
     // Токен подтверждения почты
-    const emailConfirmToken = crypto.randomBytes(32).toString('hex');
+    const emailConfirmToken = crypto.randomBytes(32).toString('hex')
     
     // Создать нового пользователя
     const newUser = await User.create({

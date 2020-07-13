@@ -113,8 +113,7 @@ export async function onSubmitHandler(values, setServerErr, token, dispatch, set
         .then(res => res.json())
         .then(res => res)
         .catch(err => console.log(err))
-    console.log(serverRes)
-    // debugger
+    
     /*
     Если в serverRes будет объект с ошибкой про испорченный токен...
     {
@@ -143,7 +142,7 @@ export async function onSubmitHandler(values, setServerErr, token, dispatch, set
     
     console.log('Close');
     if(serverRes.status === 'success') {
-        console.log(5555);
+
         // Если нахожусь в режиме разработке, то поставить токен в LocalStorage
         if(isDevelopment) {
             localStorage.setItem('authToken', serverRes.token)

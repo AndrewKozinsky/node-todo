@@ -151,7 +151,6 @@ function kickUser(dispatch) {
     // Если нахожусь в режиме разработки, то убрать токен авторизации из LocalStorage
     // По какому адресу буду делать запрос на вход пользователя
     if(browserConfig.isDevelopment) {
-        console.log(67);
         localStorage.removeItem('authToken')
     }
     

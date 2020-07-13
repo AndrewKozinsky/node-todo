@@ -12,14 +12,11 @@ import Error from "../../../../../components/formElements/error";
 import axios from "axios";
 
 
-
-
 // Проверка полей формы
 export const validationSchema = Yup.object({
     name: Yup.string()
         .required('This field is required')
 })
-
 
 /**
  * Функция возвращает отрисовываемую форму
@@ -91,13 +88,6 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
     const {serverOrigin, isDevelopment} = browserConfig
     const apiUrl = serverOrigin + '/api/v1/users/me'
     
-    
-    // Параметры запроса
-    /*const options = {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
-    }*/
     
     // Возьму токен из LocalStorage
     const locStrToken = localStorage.getItem('authToken')

@@ -4,7 +4,7 @@ import s from './css/userPage.scss'
 import DataForm from "./components/dataForm";
 import EmailForm from "./components/emailForm";
 import PasswordChangingForm from "./components/passwordChangingForm";
-import AccountRemovingForm from "./components/accountRemovingForm";
+import AccountRemoving from "./components/accountRemoving";
 
 function UserPage() {
     
@@ -24,14 +24,14 @@ function UserPage() {
             </div>
             <div>
                 <section className={s.formSection}>
-                    <Header text="Password changing" tag='h3' type='h3' />
+                    <Header text="Password change" tag='h3' type='h3' />
                     <PasswordChangingForm />
                 </section>
             </div>
             <div>
                 <section className={s.formSection}>
-                    <Header text="Account removing" tag='h3' type='h3' />
-                    <AccountRemovingForm />
+                    <Header text="Account deletion" tag='h3' type='h3' />
+                    <AccountRemoving />
                 </section>
             </div>
         </div>

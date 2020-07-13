@@ -148,8 +148,6 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         .then(res => res)
         .catch(err => console.log(err))
     
-    console.log(serverRes);
-    
     /* Если в serverRes будет объект с ошибкой про неверные данные от пользователя если указан не верная почта или пароль или они вообще не переданы,
     то показать сообщение об ошибке:
     {
