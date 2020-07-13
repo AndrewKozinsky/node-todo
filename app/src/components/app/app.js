@@ -10,11 +10,8 @@ import {
 } from "react-router-dom";
 
 import MainPage from "../../pages/main"
-import RegPage from "../../pages/reg"
-import EnterPage from "../../pages/enter"
-import ForgotPasswordPage from "../../pages/forgotPassword"
-import ResetPasswordPage from "../../pages/resetPassword"
 import UserAreaPages from "../../pages/userArea";
+import EntrancePages from "../../pages/entrance";
 
 
 const App = () => {
@@ -26,17 +23,8 @@ const App = () => {
                     <Route path='/' exact>
                         <MainPage />
                     </Route>
-                    <Route path='/reg'>
-                        <RegPage />
-                    </Route>
-                    <Route path='/enter'>
-                        <EnterPage />
-                    </Route>
-                    <Route path='/forgot-password'>
-                        <ForgotPasswordPage />
-                    </Route>
-                    <Route path='/reset-password/:token'>
-                        <ResetPasswordPage />
+                    <Route path='/(reg|enter|forgot-password|reset-password/:token)'>
+                        <EntrancePages />
                     </Route>
                     <Route path='/(notes|user)'>
                         <UserAreaPages />

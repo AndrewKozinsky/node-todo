@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux"
 import {Switch, Route, Redirect} from 'react-router-dom'
 import NotesPage from "../../pages/notes"
 import UserPage from "../../pages/user"
-import {checkToken} from "../main/js/checkToken";
+import {checkToken} from "../entrance/js/checkToken";
 import {setAuthTokenStatus} from "../../store/actions";
 import {setUserDataToStore} from "./js/resources";
 import Spinner from "../../components/various/spinner";

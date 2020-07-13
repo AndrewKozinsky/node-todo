@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Formik} from "formik";
-import {Link, Redirect, useParams} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import s from './css/form.scss'
 import FormHeader from "../../../../components/formElements/formHeader";
 import Error from "../../../../components/formElements/error";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,45 +11,41 @@ import {
     createForm,
     onSubmitHandler
 } from "./js/resources";
-import {checkToken} from "../../../main/js/checkToken";
+import {checkToken} from "../../js/checkToken";
 import {setAuthTokenStatus} from "../../../../store/actions";
 
 
 // Форма регистрации нового пользователя
-function ResetPasswordForm() {
+function ForgotPasswordForm() {
     
     const dispatch = useDispatch()
-    
-    // Получу из адресной строки токен сброса пароля
-    let { token } = useParams();
     
     // Сообщение об ошибке с сервера
     let [serverErr, setServerErr] = useState(null)
     
-    // Нужно ли делать переадресацию на страницу заметок
-    const [goToNotes, setGoToNotes] = useState(false)
+    // Уведомление
+    const [notification, setNotification] = useState(null)
     
-    if(goToNotes) {
-        return <Redirect to='/notes'/>
-    }
+    // Если есть уведомление, то отрисовать уведомленин.
+    if(notification) return notification
     
     
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Password Reset' />
+            <FormHeader text='Reset Password' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={(values) => onSubmitHandler(values, setServerErr, token, dispatch, setGoToNotes)}
+                onSubmit={(values) => onSubmitHandler(values, setServerErr, setNotification, dispatch)}
             >
                 { formik => createForm(formik, setServerErr) }
             </Formik>
-            
+    
             {serverErr}
         </div>
     )
 }
 
 
-export default ResetPasswordForm
+export default ForgotPasswordForm

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Redirect} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
-import {checkToken} from "./js/checkToken";
+import {checkToken} from "../entrance/js/checkToken";
 import {setAuthTokenStatus} from "../../store/actions";
 
 

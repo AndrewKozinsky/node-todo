@@ -14,12 +14,15 @@ const inicialState = {
         // Если 2, то нет или он неверный. Если 3, то правильный.
         authTokenStatus: 0
     },
-    notes: [
-        /*{
+    notes: {
+        areNotesSaved: true,
+        notes: [
+            /*{
             text: '',
             important: false
         }*/
-    ]
+        ]
+    },
 }
 
 

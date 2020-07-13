@@ -11,12 +11,12 @@ import {
     createForm,
     onSubmitHandler
 } from "./js/resources";
-import {checkToken} from "../../../main/js/checkToken";
+import {checkToken} from "../../js/checkToken";
 import {setAuthTokenStatus} from "../../../../store/actions";
 
 
 // Форма регистрации нового пользователя
-function ForgotPasswordForm() {
+function RegForm() {
     
     const dispatch = useDispatch()
     
@@ -33,7 +33,7 @@ function ForgotPasswordForm() {
     // Отрисовываемая форма
     return (
         <div>
-            <FormHeader text='Reset Password' />
+            <FormHeader text='Sign up' />
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -41,11 +41,15 @@ function ForgotPasswordForm() {
             >
                 { formik => createForm(formik, setServerErr) }
             </Formik>
-    
+            
             {serverErr}
+    
+            <div className={s.bottomPart}>
+                <p>Do you have an account? <Link to='/enter'>Sign in.</Link></p>
+            </div>
         </div>
     )
 }
 
 
-export default ForgotPasswordForm
+export default RegForm
