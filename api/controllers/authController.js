@@ -7,6 +7,7 @@ const AppError = require('../utils/appError');
 const sendEmail = require('../utils/email');
 const {createSendToken} = require('./authToken');
 
+
 // Функция проверяющая правильность токена. Токен передаётся в заголовке запроса.
 exports.checkToken = async (req, res, next) => {
     let token
@@ -45,7 +46,7 @@ exports.checkToken = async (req, res, next) => {
  * @param {String} confirmToken — токен подтверждения почты
  * @returns {Promise<void>}
  */
-const sendEmailAddressConfirmLetter = async (req, email, confirmToken) => {
+exports.sendEmailAddressConfirmLetter = async (req, email, confirmToken) => {
     const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
     
     await sendEmail({

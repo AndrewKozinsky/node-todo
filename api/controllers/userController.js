@@ -1,7 +1,9 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const crypto = require('crypto')
 const User = require('../mongooseModels/user');
 const authToken = require('./authToken');
+const {sendEmailAddressConfirmLetter} = require("./authController");
 
 
 /**
@@ -31,11 +33,27 @@ exports.changeMyEmail = catchAsync(async (req, res, next) => {
         )
     }
     
+    // Если передали такую же почту, то ничего не делать
+    if(newEmail === req.user.email) {
+        return next(
+            new AppError(`Existing email was passed. Write new one to change existing one.`, 400)
+        )
+    }
+    
+    // Токен подтверждения почты
+    const emailConfirmToken = crypto.randomBytes(32).toString('hex');
+    
     const user = await User.findOneAndUpdate(
         {email: req.user.email},
-        {email: newEmail},
+        {
+            email: newEmail,
+            emailConfirmToken: emailConfirmToken,
+        },
         {new: true}
-    )
+    ).select('-_id -emailConfirmToken -__v -passwordChangedAt')
+    
+    // Отправлю письмо с подтверждением почты
+    await sendEmailAddressConfirmLetter(req, req.body.email, emailConfirmToken)
     
     res.status(200).json({
         status: 'success',
@@ -44,6 +62,7 @@ exports.changeMyEmail = catchAsync(async (req, res, next) => {
         }
     })
 })
+
 
 // Функция отправляет данные пользователя по его токену
 exports.getMe = catchAsync(async (req, res, next) => {
