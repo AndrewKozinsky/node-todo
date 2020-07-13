@@ -1,23 +1,36 @@
-// import React from "react";
-// import * as Yup from "yup";
-// import browserConfig from '../../../../../browserConfig'
-// import {Form} from "formik";
-// import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
-// import TextInput from "../../../../../components/formElements/textInput";
-// import Button from "../../../../../components/formElements/button";
+import React from "react";
+import * as Yup from "yup";
+import browserConfig from '../../../../../browserConfig'
+import {Form} from "formik";
+import FieldsDividerWrapper from "../../../../../components/formContainers/fieldsDividerWrapper";
+import TextInput from "../../../../../components/formElements/textInput";
+import Button from "../../../../../components/formElements/button";
 // import {setAuthTokenStatus} from "../../../../../store/actions";
-// import Notification from "../../../../../components/various/notification";
-// import Error from "../../../../../components/formElements/error";
-// import axios from "axios";
+import Notification from "../../../../../components/various/notification";
+import Error from "../../../../../components/formElements/error";
+import axios from "axios";
 
 
+// Начальные значения полей формы
+export const initialValues = {
+    "passwordCurrent": '',
+    "password": '',
+    "passwordConfirm": ''
+}
 
 // Проверка полей формы
-/*export const validationSchema = Yup.object({
-    email: Yup.string()
+export const validationSchema = Yup.object({
+    passwordCurrent: Yup.string()
         .required('This field is required')
-        .email('Invalid email address')
-})*/
+        .min(4, 'Must be 4 characters or more'),
+    password: Yup.string()
+        .required('This field is required')
+        .min(4, 'Must be 4 characters or more'),
+    passwordConfirm: Yup.string().oneOf(
+        [Yup.ref("password")],
+        "Both passwords need to be the same"
+    )
+})
 
 
 /**
@@ -28,7 +41,7 @@
  * чтобы после любого изменения формы текст ошибки сервера бы скрывался.
  * @returns {*}
  */
-/*export function createForm(formik, setServerErr) {
+export function createForm(formik, setServerErr) {
     
     // Если форму отправили, то заблокировать поля ввода
     let isDisabled = formik.isSubmitting
@@ -36,20 +49,26 @@
     return (
         <Form onChange={() => setServerErr(null)}>
             <FieldsDividerWrapper indent='2'>
-                <TextInput label='Email' type='email' name='email' disabled={isDisabled} autoComplete="email" />
+                <TextInput label='Current password' type='password' name='passwordCurrent' disabled={isDisabled} autoComplete="current-password" />
+            </FieldsDividerWrapper>
+            <FieldsDividerWrapper indent='2'>
+                <TextInput label='New password' type='password' name='password' disabled={isDisabled} autoComplete="new-password" />
+            </FieldsDividerWrapper>
+            <FieldsDividerWrapper indent='2'>
+                <TextInput label='New password' type='password' name='passwordConfirm' disabled={isDisabled} autoComplete="new-password" />
             </FieldsDividerWrapper>
             
             <SubmitBtn formik={formik} />
         </Form>
     )
-}*/
+}
 
 /**
  * Функция возвращает кнопку отправки формы
  * @param {Object} formik — объект с со свойствами и методами возаращаемыми библиотекой Formik
  * @returns {*}
  */
-/*function SubmitBtn({formik}) {
+function SubmitBtn({formik}) {
     
     // Атрибуты кнопки
     const attrs = {
@@ -72,7 +91,7 @@
     }
     
     return <Button {...attrs} />
-}*/
+}
 
 /**
  * Обработчик отправки формы
@@ -84,79 +103,77 @@
 export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
     
     // По какому адресу буду делать запрос на вход пользователя
-    // const {serverOrigin, isDevelopment} = browserConfig
-    // const apiUrl = serverOrigin + '/api/v1/users/myEmail'
+    const {serverOrigin, isDevelopment} = browserConfig
+    const apiUrl = serverOrigin + '/api/v1/users/myPassword'
     
     // Возьму токен из LocalStorage
-    // const locStrToken = localStorage.getItem('authToken')
-    // let headers
-    /*if(locStrToken && isDevelopment) {
+    const locStrToken = localStorage.getItem('authToken')
+    let headers
+    if(locStrToken && isDevelopment) {
         headers = { 'Authorization': 'Bearer ' + locStrToken }
-    }*/
+    }
     
-    /*let serverRes = await axios({
-        method: 'put',
+    let serverRes = await axios({
+        method: 'patch',
         headers,
         url: apiUrl,
         data: values
-    })*/
-    // serverRes = serverRes.data
+    })
+    serverRes = serverRes.data
     
     
     /*
-    Если в serverRes будет ошибка, то пользователю удалось отправить форму без почты
-    или он ввёл существующую почту: показать ошибку:
+    Если в serverRes будет ошибка, то показать ошибку:
     {
         "status": "fail",
         "error": {
-            "statusCode": 400,
+            "statusCode": 401,
             "isOperational": true,
-            "message": "Cannot change email because it didn't pass."
+            "message": "User recently changed password! Please log in again."
         }
     }*/
-    /*if(serverRes.status === 'fail' && serverRes.error.statusCode === 400) {
+    /*{
+        "status": "fail",
+        "error": {
+            "statusCode": 401,
+            "isOperational": true,
+            "message": "Your current password is wrong"
+        }
+    }*/
+    /*{
+        "status": "error",
+        "error": {
+            "statusCode": 400,
+            "message": "Invalid input data: Please provide a password. A password must have at least 4 characters.. Passwords are not equal!"
+        }
+    }*/
+    if(serverRes.status === 'fail' || serverRes.status === 'error') {
         setServerErr(
             <Error text={serverRes.error.message} indent='3' />
         )
-        
-    }*/
+    }
     
     /* Если всё верно, то в serverRes будет объект с успехом:
     {
         "status": "success",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMDk3MTc4MTE3YzhmNDVmNzRiMjc3OSIsImlhdCI6MTU5NDY0MjE0NiwiZXhwIjoxNjAyNDE4MTQ2fQ.vLPLRc4cXT9L2SjEHGFrAYV4fqzYanQFFrgP701aL1M",
         "data": {
             "user": {
-                "name": "Андрей Козинский",
-                "email": "andkozinskiy2@yandex.ru"
+                "name": "Andrew Kozinsky",
+                "email": "andkozinskiy@yandex.ru"
             }
         }
     }*/
-    /*if(serverRes.status === 'success') {
+    if(serverRes.status === 'success') {
     
-        const mailService = 'https://' + values.email.split('@')[1]
+        // Если нахожусь в режиме разработки, то поставлю токен авторизации в LocalStorage
+        if(isDevelopment) {
+            localStorage.setItem('authToken', serverRes.token)
+        }
         
-        // Уведомить пользователя о необходимости подтвердить почту
+        // Уведомить пользователя об успешном изменении пароля
         setNotification(
-            <Notification topIndent='1'>The confirmation letter was sent to <a href={mailService}>your new email</a>. Click link on it to confirm your new email address.</Notification>
+            <Notification topIndent='1'>The password has been changed.</Notification>
         )
-        
-        window.addEventListener('unload', () => kickUser(dispatch))
-        
-        setTimeout(() => {
-            kickUser(dispatch)
-        }, 10000)
-    }*/
-}
-
-/*
-function kickUser(dispatch) {
-    // Если нахожусь в режиме разработки, то убрать токен авторизации из LocalStorage
-    // По какому адресу буду делать запрос на вход пользователя
-    if(browserConfig.isDevelopment) {
-        console.log(67);
-        localStorage.removeItem('authToken')
     }
-    
-    // Поставить статус токена авторизации в 1 чтобы выкинуть пользователя.
-    dispatch(setAuthTokenStatus(1))
-}*/
+}

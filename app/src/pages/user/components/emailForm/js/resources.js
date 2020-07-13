@@ -118,7 +118,6 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         setServerErr(
             <Error text={serverRes.error.message} indent='3' />
         )
-        
     }
     
     /* Если всё верно, то в serverRes будет объект с успехом:
