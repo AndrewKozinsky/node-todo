@@ -1,5 +1,8 @@
 @import "../../app/css/variables";
 
+.h2, .h3 {
+    color: $text-color;
+}
 
 .h2 {
     font-size: 3.4rem;

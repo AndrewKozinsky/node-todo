@@ -1,14 +1,14 @@
 import React from 'react'
-import { Formik, Form, useField } from 'formik';
+import { useField } from 'formik';
 import Error from "../error";
 import './css/textInput.scss'
 
 
 function TextInput({ label, ...props }) {
     
-    const [field, meta] = useField(props);
+    const [field, meta] = useField(props)
     
-    let [labelEl, id] = createLabel(label);
+    let [labelEl, id] = createLabel(label)
     
     let cls = 'text-input'
     if(props.type === 'search') cls += ' text-input--search'

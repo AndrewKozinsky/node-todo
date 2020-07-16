@@ -2,7 +2,9 @@ import {createStore} from "redux";
 import {
     setUser,
     setAuthTokenStatus,
-    addNote
+    addAllNote,
+    addNote,
+    changesNotesSaveStatus
 } from './reducers'
 
 
@@ -18,9 +20,15 @@ const inicialState = {
         areNotesSaved: true,
         notes: [
             /*{
-            text: '',
-            important: false
-        }*/
+                id: 1,
+                text: 'Сделай программу на Реакте и Ноде где задачи были бы написаны огромным шрифтом. Думаю это будет выглядеть интересно.',
+                important: false
+            },
+            {
+                id: 2,
+                text: 'Может вместо видео делать текстовые статьи?',
+                important: true
+            }*/
         ]
     },
 }
@@ -32,8 +40,12 @@ function reducer(state = inicialState, action) {
             return setUser(state, action)
         case 'SET_AUTH_TOKEN_STATUS':
             return setAuthTokenStatus(state, action)
+        case 'ADD_ALL_NOTES':
+            return addAllNote(state, action)
         case 'ADD_NOTE':
             return addNote(state, action)
+        case 'CHANGE_NOTES_SAVE_STATUS':
+            return changesNotesSaveStatus(state, action)
         default:
             return state
     }

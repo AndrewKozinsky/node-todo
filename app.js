@@ -27,6 +27,11 @@ if(process.env.NODE_ENV === 'development') {
 // Сделаю чтобы в свойство body объекта запроса заносились данные присланные в теле запроса
 app.use(express.json({limit: '10kb'}))
 
+/*app.use((req, res, next) => {
+    console.log(req.body)
+    next()
+})*/
+
 // Удаление вредоносного кода в запросах
 // app.use(mongoSanitize())
 

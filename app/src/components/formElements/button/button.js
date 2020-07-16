@@ -57,14 +57,14 @@ function Button(props) {
 }
 
 
-// type —- значёк на кнопке. Значения: person, exit, check-all, sun, close, spinner
-function createSign(type) {
-    if(!type) return null
-    if(type === 'spinner') return createSpinner()
+// sign —- значёк на кнопке. Значения: person, exit, check-all, sun, close, spinner
+function createSign(sign) {
+    if(!sign) return null
+    if(sign === 'spinner') return createSpinner()
     
     let cls = 'btn__sign ';
     
-    switch (type) {
+    switch (sign) {
         case 'person':
             cls += 'btn__sign--person'
             break

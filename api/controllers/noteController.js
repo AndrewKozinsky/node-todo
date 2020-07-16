@@ -5,29 +5,29 @@ const Note = require('../mongooseModels/note')
 // Функция корректирующая объект запроса Монгуса в зависимости
 // от переданных подзапросов в адресной строке.
 const handleGetNotesQuery = (query, queryObj) => {
-    if(!queryObj) return query;
+    // if(!queryObj) return query;
     
-    if(queryObj.search) {
+    /*if(queryObj.search) {
         const regExp = new RegExp(queryObj.search, 'gi')
         query = query.find({
             text: regExp
         })
-    }
+    }*/
     
-    if(queryObj.important) {
+    /*if(queryObj.important) {
         const importantStatus = queryObj.important === '1'
         query = query.find({
             important: importantStatus
         })
-    }
+    }*/
     
-    if(queryObj.page) {
+    /*if(queryObj.page) {
         const page = queryObj.page * 1 || 1
         const limit = queryObj.limit * 1 || 3
         const skip = (page - 1) * limit;
     
         query = query.skip(skip).limit(limit);
-    }
+    }*/
     
     return query
 }
@@ -36,7 +36,10 @@ const handleGetNotesQuery = (query, queryObj) => {
 exports.getMyNotes = catchAsync(async (req, res, next) => {
     
     // Сформирую объект запроса
-    let query = Note.find({ userId: req.user.id }).select('-__v')
+    let query = Note
+        .find({ userId: req.user.id })
+        .select('-__v')
+        .sort({ date: 'desc' });
     
     // Обработать подзапрос переданные в адресной строке
     query = handleGetNotesQuery(query, req.query)
@@ -58,7 +61,11 @@ exports.getMyNotes = catchAsync(async (req, res, next) => {
 exports.createMyNote = catchAsync(async (req, res, next) => {
     
     // Получу из тела текст новой заметки и важна ли заметка
-    const {text: noteText, important} = req.body;
+    const {
+        text: noteText,
+        date,
+        important = false
+    } = req.body;
     
     // Если текст не передан, то выбросить ошибку
     if(!noteText) {
@@ -70,14 +77,20 @@ exports.createMyNote = catchAsync(async (req, res, next) => {
     // Создание новой заметки
     const newNote = await Note.create({
         text: noteText,
+        date,
         important,
         userId: req.user.id
     })
+
     
     res.status(200).json({
         status: 'success',
         data: {
-            note: newNote
+            note: {
+                text: newNote.text,
+                important: newNote.important,
+                id: newNote._id
+            }
         }
     })
 });

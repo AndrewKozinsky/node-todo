@@ -27,15 +27,16 @@ module.exports = (env = {}) => {
         }
         
         if(mode === 'development') {
-            jsConfig = Object.assign(jsConfig, {
-                enforce: 'pre',
-                use: [
-                    { loader: 'babel-loader' },
-                    {
-                        loader: 'source-map-loader',
-                    }
-                ]
-            })
+            jsConfig = Object.assign(
+                jsConfig,
+                {
+                    enforce: 'pre',
+                    use: [
+                        { loader: 'babel-loader' },
+                        { loader: 'source-map-loader' }
+                    ]
+                }
+            )
         }
     
         if(mode === 'production') {
@@ -150,7 +151,7 @@ module.exports = (env = {}) => {
             ]
         },
         plugins: managePlugins(),
-        devtool: 'eval',
+        devtool: 'eval-cheap-module-source-map',
         devServer: {
             port: 8080,
             publicPath: '/',

@@ -38,7 +38,7 @@ function SavedStatus() {
     cls += areNotesSaved ? s.notesSaved : s.notesAreSaving
     
     // В зависимости от статуса будет разный текст
-    const text = areNotesSaved ? 'All changes were saved' : 'Notes are saving now'
+    const text = areNotesSaved ? 'All changes were saved' : 'Notes being saved'
     
     return <p className={cls}>{text}</p>
 }

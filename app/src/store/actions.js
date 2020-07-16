@@ -14,9 +14,23 @@ export function setAuthTokenStatus(status) {
     }
 }
 
+export function addAllNotes(notesArr) {
+    return {
+        type: 'ADD_ALL_NOTES',
+        notesArr
+    }
+}
+
 export function addNote(text) {
     return {
         type: 'ADD_NOTE',
         text
+    }
+}
+
+export function changesNotesSaveStatus(areNotesSaved) {
+    return {
+        type: 'CHANGE_NOTES_SAVE_STATUS',
+        areNotesSaved
     }
 }

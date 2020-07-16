@@ -1,0 +1,63 @@
+@import "../../../../../components/app/css/variables";
+
+.notification {
+    font-size: 2.4rem;
+    color: lighten($text-color, 60%);
+}
+
+.noteWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+}
+
+.text {
+    font-size: 34px;
+    line-height: 44px;
+    color: $text-color;
+    //background-color: aquamarine;
+    margin-right: 15px;
+}
+
+.textImportant {
+    color: $important-color;
+    font-weight: bolder;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    //background-color: azure;
+}
+
+.button {
+    width: 39px;
+    height: 35px;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+}
+
+.importantBtn {
+    background-image: url("../svg/imp-btn.svg");
+
+    &:hover {
+        background-image: url("../svg/imp-btn-hover.svg");
+    }
+}
+.importantBtnOn {
+    background-image: url("../svg/imp-btn-on.svg");
+
+    &:hover {
+        background-image: url("../svg/imp-btn-on-hover.svg");
+    }
+}
+
+.deleteBtn {
+    background-image: url("../svg/del-btn.svg");
+
+    &:hover {
+        background-image: url("../svg/del-btn-hover.svg");
+    }
+}

@@ -28,7 +28,7 @@ function EnterForm() {
     
     
     // Отрисовываемая форма
-    return (
+    /*return (
         <div>
             <Header text='Log in' />
             <Formik
@@ -46,7 +46,7 @@ function EnterForm() {
                 <p>Don't remember password? <Link to='/forgot-password'>Reset password.</Link></p>
             </div>
         </div>
-    )
+    )*/
 }
 
 

@@ -5,6 +5,10 @@ const noteSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide note\'s text' ]
     },
+    date: {
+        type: Date,
+        required: [true, 'Please provide a date of creation' ]
+    },
     important: {
         type: Boolean,
         default: false
@@ -13,6 +17,9 @@ const noteSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide user\'s id' ]
     }
+}, {
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
 })
 
 

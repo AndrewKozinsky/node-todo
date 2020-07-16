@@ -22,16 +22,38 @@ export function setAuthTokenStatus(state, action) {
     return copyState
 }
 
+export function addAllNote(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.notes = action.notesArr
+    
+    copyState.notes = copyNotes
+    return copyState
+}
+
 export function addNote(state, action) {
     const copyState = {...state}
-    const copyNotes = [...copyState.notes]
+    const copyNotes = {...copyState.notes}
+    const copyNotesArr = [...copyNotes.notes]
     
     const newNote = {
         text: action.text,
         important: false
     }
     
-    copyNotes.unshift(newNote)
+    copyNotesArr.unshift(newNote)
+    copyNotes.notes = copyNotesArr
+    copyState.notes = copyNotes
+    
+    return copyState
+}
+
+export function changesNotesSaveStatus(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.areNotesSaved = action.areNotesSaved
     
     copyState.notes = copyNotes
     
