@@ -4,7 +4,8 @@ import {
     setAuthTokenStatus,
     addAllNote,
     addNote,
-    changesNotesSaveStatus
+    changeNoteImportantStatus,
+    changesNotesSaveStatus, deleteNote
 } from './reducers'
 
 
@@ -20,14 +21,15 @@ const inicialState = {
         areNotesSaved: true,
         notes: [
             /*{
-                id: 1,
                 text: 'Сделай программу на Реакте и Ноде где задачи были бы написаны огромным шрифтом. Думаю это будет выглядеть интересно.',
-                important: false
+                important: false,
+                timeStamp: 635643223671
             },
             {
-                id: 2,
+                _id: 2,
                 text: 'Может вместо видео делать текстовые статьи?',
-                important: true
+                important: true,
+                timeStamp: 635643223672
             }*/
         ]
     },
@@ -44,6 +46,10 @@ function reducer(state = inicialState, action) {
             return addAllNote(state, action)
         case 'ADD_NOTE':
             return addNote(state, action)
+        case 'CHANGE_NOTE_IMPORTANT_STATUS':
+            return changeNoteImportantStatus(state, action)
+        case 'DELETE_NOTE':
+            return deleteNote(state, action)
         case 'CHANGE_NOTES_SAVE_STATUS':
             return changesNotesSaveStatus(state, action)
         default:

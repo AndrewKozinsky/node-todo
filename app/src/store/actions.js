@@ -28,6 +28,20 @@ export function addNote(text) {
     }
 }
 
+export function changeNoteImportantStatus(timeStamp) {
+    return {
+        type: 'CHANGE_NOTE_IMPORTANT_STATUS',
+        timeStamp,
+    }
+}
+
+export function deleteNote(timeStamp) {
+    return {
+        type: 'DELETE_NOTE',
+        timeStamp
+    }
+}
+
 export function changesNotesSaveStatus(areNotesSaved) {
     return {
         type: 'CHANGE_NOTES_SAVE_STATUS',

@@ -10,7 +10,7 @@ router.route('/')
     .post(authController.protect, noteController.createMyNote)
 
 // Обновление и удаление конкретной заметки пользователя
-router.route('/:id')
+router.route('/:timeStamp')
     .patch(authController.protect, noteController.updateMyNote)
     .delete(authController.protect, noteController.deleteMyNote)
 

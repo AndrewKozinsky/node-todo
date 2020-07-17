@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import s from './css/newTaskForm.scss'
 import {useDispatch} from "react-redux";
 import {formSubmit} from "./js/resources";
@@ -7,6 +7,10 @@ import {formSubmit} from "./js/resources";
 function NewTaskForm() {
     const dispatch = useDispatch()
     const inputRef = useRef(null)
+    
+    useEffect(() => {
+        inputRef.current.focus()
+    })
     
     // Обработчик отправки формы
     function formSubmitHandler(e) {

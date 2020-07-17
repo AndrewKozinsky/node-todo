@@ -2,6 +2,7 @@ import {addNote, changesNotesSaveStatus} from "../../../../../store/actions";
 import browserConfig from "../../../../../browserConfig";
 import axios from "axios";
 
+
 export function formSubmit(e, inputRef, dispatch) {
     // Отменить переход на другую страницу
     e.preventDefault()
@@ -55,7 +56,7 @@ async function addNewNoteAtServer(noteText) {
         url: apiUrl,
         data: {
             text: noteText,
-            date: new Date()
+            timeStamp: Date.now()
         }
     })
 }

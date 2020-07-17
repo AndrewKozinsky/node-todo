@@ -5,9 +5,9 @@ const noteSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide note\'s text' ]
     },
-    date: {
-        type: Date,
-        required: [true, 'Please provide a date of creation' ]
+    timeStamp: {
+        type: Number,
+        required: [true, 'Please provide a timeStamp' ]
     },
     important: {
         type: Boolean,
@@ -17,9 +17,6 @@ const noteSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide user\'s id' ]
     }
-}, {
-    toJSON: {virtuals: true},
-    toObject: {virtuals: true}
 })
 
 
