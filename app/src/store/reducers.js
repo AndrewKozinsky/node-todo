@@ -42,6 +42,18 @@ export function addDisplayedNotes(state, action) {
     return copyState
 }
 
+export function changeDisplayedType(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.displayedType = action.displayedType
+    
+    copyState.notes = copyNotes
+    return copyState
+}
+
+
+
 export function addNote(state, action) {
     const copyState = {...state}
     const copyNotes = {...copyState.notes}

@@ -21,6 +21,7 @@ function NotesList() {
         allNotes,
         currentPage,
         displayedNotes,
+        displayedType,
         notesPerPage,
         searchStr
     } = useSelector(store => store.notes)
@@ -38,9 +39,16 @@ function NotesList() {
     useEffect(() => {
 
         // Создать массив где будут заметки с искомым текстом
-        let displayedNotes = allNotes.filter(noteObj => {
+        let filteredNotes = allNotes.filter(noteObj => {
             return noteObj.text.indexOf(searchStr) !== -1
         })
+        
+        // Отфильтрую заметки по типу
+        if(displayedType === 'important') {
+            filteredNotes = filteredNotes.filter(noteObj => {
+                return noteObj.important
+            })
+        }
         
         // Узнать на сколько нужно порезать массив всех заметок
         // чтобы показывать только требуемые заметки
@@ -49,23 +57,20 @@ function NotesList() {
         
         // Порезать массив показываемых заметок чтобы тут были только заметки,
         // которые нужно показать на странице
-        displayedNotes = displayedNotes.slice(startIndex, endIndex)
+        filteredNotes = filteredNotes.slice(startIndex, endIndex)
         
         // Поставить показываемые заметки в Хранилище
-        dispatch(addDisplayedNotes(displayedNotes))
+        dispatch(addDisplayedNotes(filteredNotes))
         
-    }, [allNotes, currentPage, searchStr])
-    
-    // Получить из Хранилища массив показываемых заметок
-    const notesArr = useSelector(state => state.notes.displayedNotes)
+    }, [allNotes, currentPage, searchStr, displayedType])
     
     // Если заметок нет, то отрисовать соответствующее уведомление
-    if(!notesArr.length) {
+    if(!displayedNotes.length) {
         return <p className={s.notification}>You don't have any notes. Write the first one!</p>
     }
     
     // Если заметки есть, то отрисовать каждую заметку
-    return notesArr.map(noteObj => {
+    return displayedNotes.map(noteObj => {
         return (
             <div className={s.noteWrapper} key={noteObj.timeStamp}>
                 <NoteText noteObj={noteObj} />

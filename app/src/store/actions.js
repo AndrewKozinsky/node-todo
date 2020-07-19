@@ -28,6 +28,13 @@ export function addDisplayedNotes(notesArr) {
     }
 }
 
+export function changeDisplayedType(displayedType) {
+    return {
+        type: 'CHANGE_DISPLAYED_TYPE',
+        displayedType
+    }
+}
+
 export function addNote(text) {
     return {
         type: 'ADD_NOTE',

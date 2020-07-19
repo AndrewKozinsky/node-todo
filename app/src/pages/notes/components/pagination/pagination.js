@@ -12,6 +12,7 @@ function Pagination() {
         allNotes,
         notesPerPage,
         currentPage,
+        displayedType,
         searchStr
     } = useSelector(store => store.notes)
     
@@ -24,6 +25,13 @@ function Pagination() {
     let filteredNotes = allNotes.filter(noteObj => {
         return noteObj.text.indexOf(searchStr) !== -1
     })
+    
+    // Отфильтрую заметки по типу
+    if(displayedType === 'important') {
+        filteredNotes = filteredNotes.filter(noteObj => {
+            return noteObj.important
+        })
+    }
     
     // Получу количество страниц
     const pagesCount = Math.ceil(filteredNotes.length / notesPerPage)

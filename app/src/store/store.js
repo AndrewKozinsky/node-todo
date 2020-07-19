@@ -4,6 +4,7 @@ import {
     setAuthTokenStatus,
     addAllNotes,
     addDisplayedNotes,
+    changeDisplayedType,
     addNote,
     changeNoteImportantStatus,
     deleteNote,
@@ -25,6 +26,7 @@ const inicialState = {
         currentPage: 0, // Текущая показываемая страница в заметках
         notesPerPage: 3, // Сколько заметок показывается на одной странице
         searchStr: '', // Какой текст ищут
+        displayedType: 'all', // Какой тип заметок показывается: all (все) или important (важные)
         // Все заметки
         allNotes: [
             /*{
@@ -56,6 +58,8 @@ function reducer(state = inicialState, action) {
             return addAllNotes(state, action)
         case 'ADD_DISPLAYED_NOTES':
             return addDisplayedNotes(state, action)
+        case 'CHANGE_DISPLAYED_TYPE':
+            return changeDisplayedType(state, action)
         case 'ADD_NOTE':
             return addNote(state, action)
         case 'CHANGE_NOTE_IMPORTANT_STATUS':

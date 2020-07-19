@@ -43,7 +43,7 @@ function Button(props) {
     
     // Контент
     const signEl = createSign(sign)
-    const counterEl = <span className='btn__counter' key='b'>{counter}</span>
+    const counterEl = counter ? <span className='btn__counter' key='b'>{counter}</span> : null
     const innerContent = [
         signEl,
         <span className='btn__text' key='f'>{text}</span>,
