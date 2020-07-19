@@ -1,16 +1,26 @@
 import React from 'react';
-import {createForm, onSubmitHandler} from "./js/resources";
+import {createForm} from "./js/resources";
 import {Formik} from "formik";
+import {useDispatch} from "react-redux";
+import {setSearchStr} from "../../../../store/actions";
+
 
 function NotesSearch() {
     
-    const getValues = () => {}
+    const dispatch = useDispatch()
+    
+    const getValues = (e) => {
+        const inputValue = e.target.value
+        
+        dispatch(setSearchStr(inputValue))
+    }
     
     return (
         <Formik
             initialValues={{search: ''}}
-            /*validationSchema={validationSchema}*/
-            onSubmit={(values) => onSubmitHandler(values, setServerErr, setNotification, dispatch)}
+            onSubmit={() => {
+            
+            }}
         >
             { formik => createForm(formik, getValues) }
         </Formik>

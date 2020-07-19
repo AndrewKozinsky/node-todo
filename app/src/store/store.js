@@ -9,7 +9,8 @@ import {
     changeNoteImportantStatus,
     deleteNote,
     setNotesCurrentPage,
-    changesNotesSaveStatus
+    changesNotesSaveStatus,
+    setSearchStr
 } from './reducers'
 
 
@@ -70,6 +71,8 @@ function reducer(state = inicialState, action) {
             return setNotesCurrentPage(state, action)
         case 'CHANGE_NOTES_SAVE_STATUS':
             return changesNotesSaveStatus(state, action)
+        case 'SET_SEARCH_STR':
+            return setSearchStr(state, action)
         default:
             return state
     }

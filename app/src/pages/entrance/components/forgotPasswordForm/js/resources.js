@@ -97,6 +97,8 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         body: JSON.stringify(values)
     }
     
+    if(!isDevelopment) options.credentials = "include"
+    
     // Сделаю запрос на сервер и полученные данные помещу в serverRes
     const serverRes = await fetch(apiUrl, options)
         .then(res => res.json())

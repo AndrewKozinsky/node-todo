@@ -71,6 +71,11 @@ exports.protect = catchAsync(async (req, res, next) => {
         token = req.headers.authorization.split(' ')[1]
     } else if(req.cookie && req.cookie.authToken) {
         token = req.cookie.authToken
+        // console.log(req.cookie)
+    }
+    
+    // Это потом убери!!!!
+    if(req.cookie) {
         console.log(req.cookie)
     }
     

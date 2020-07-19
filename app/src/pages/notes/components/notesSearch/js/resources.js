@@ -1,7 +1,6 @@
 import React from 'react';
 import {Form} from "formik";
 import TextInput from "../../../../../components/formElements/textInput";
-// import {setAuthTokenStatus, setUser} from "../../../../../store/actions";
 
 
 /**
@@ -15,19 +14,8 @@ import TextInput from "../../../../../components/formElements/textInput";
 export function createForm(formik, getValues) {
     
     return (
-        <Form onChange={() => getValues(null)}>
+        <Form onChange={(values) => getValues(values)}>
             <TextInput type='search' name='search' />
         </Form>
     )
-}
-
-/**
- * Обработчик отправки формы
- * @param {Object} values — объект с введёнными значениями в поля формы.
- * @param {Function} setServerErr — функция куда нужно передать текст ошибки отданной сервером.
- * @param {Function} setNotification — функция отрисовывающая уведомление.
- * @param {Function} dispatch — диспатчер экшен-функции.
- */
-export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
-
 }

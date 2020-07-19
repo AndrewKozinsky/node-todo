@@ -22,12 +22,15 @@ export async function getNotesFromServer() {
     if(locStrToken && isDevelopment) {
         headers = { 'Authorization': 'Bearer ' + locStrToken }
     }
-    
+
     let serverRes = await axios({
         method: 'get',
         headers,
         url: apiUrl
     })
+    
+    if(!isDevelopment) serverRes.withCredentials = true
+    
     return serverRes.data.data.notes
 }
 

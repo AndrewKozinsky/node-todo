@@ -119,3 +119,14 @@ export function changesNotesSaveStatus(state, action) {
     
     return copyState
 }
+
+export function setSearchStr(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.searchStr = action.str
+    
+    copyState.notes = copyNotes
+    
+    return copyState
+}

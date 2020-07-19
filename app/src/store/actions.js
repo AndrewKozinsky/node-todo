@@ -69,3 +69,10 @@ export function changesNotesSaveStatus(areNotesSaved) {
         areNotesSaved
     }
 }
+
+export function setSearchStr(str) {
+    return {
+        type: 'SET_SEARCH_STR',
+        str
+    }
+}

@@ -40,7 +40,8 @@ function NotesList() {
 
         // Создать массив где будут заметки с искомым текстом
         let filteredNotes = allNotes.filter(noteObj => {
-            return noteObj.text.indexOf(searchStr) !== -1
+            return noteObj.text.toLowerCase()
+                .indexOf(searchStr.toLowerCase()) !== -1
         })
         
         // Отфильтрую заметки по типу

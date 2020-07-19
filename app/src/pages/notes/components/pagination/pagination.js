@@ -23,7 +23,8 @@ function Pagination() {
     
     // Отфильтровать заметки на вхождение в искомое слово
     let filteredNotes = allNotes.filter(noteObj => {
-        return noteObj.text.indexOf(searchStr) !== -1
+        return noteObj.text.toLowerCase()
+            .indexOf(searchStr.toLowerCase()) !== -1
     })
     
     // Отфильтрую заметки по типу
