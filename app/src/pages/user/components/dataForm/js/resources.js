@@ -100,6 +100,7 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
         method: 'patch',
         headers,
         url: apiUrl,
+        withCredentials: true,
         data: values
     })
     serverRes = serverRes.data

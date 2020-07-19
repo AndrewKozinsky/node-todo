@@ -25,8 +25,10 @@ export async function deleteAccount(setServerErr, setNotification, dispatch) {
     let serverRes = await axios({
         method: 'delete',
         headers,
+        withCredentials: true,
         url: apiUrl
     })
+    
     serverRes = serverRes.data
     
     /* Если придёт ошибочный ответ, то показать ошибку.

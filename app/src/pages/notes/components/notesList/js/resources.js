@@ -26,10 +26,9 @@ export async function getNotesFromServer() {
     let serverRes = await axios({
         method: 'get',
         headers,
+        withCredentials: true,
         url: apiUrl
     })
-    
-    if(!isDevelopment) serverRes.withCredentials = true
     
     return serverRes.data.data.notes
 }
@@ -66,6 +65,7 @@ export async function changeNoteStatusEverywhere(timeStamp, isImportant, dispatc
         method: 'patch',
         headers,
         url: apiUrl,
+        withCredentials: true,
         data: {
             important: isImportant
         }
@@ -98,6 +98,7 @@ export async function deleteNoteEverywhere(timeStamp, dispatch) {
     await axios({
         method: 'delete',
         headers,
+        withCredentials: true,
         url: apiUrl
     })
     

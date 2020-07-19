@@ -54,6 +54,7 @@ async function addNewNoteAtServer(noteText) {
         method: 'post',
         headers,
         url: apiUrl,
+        withCredentials: true,
         data: {
             text: noteText,
             timeStamp: Date.now()

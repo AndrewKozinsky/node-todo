@@ -116,6 +116,7 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
     let serverRes = await axios({
         method: 'patch',
         headers,
+        withCredentials: true,
         url: apiUrl,
         data: values
     })
