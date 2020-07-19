@@ -2,10 +2,13 @@ import {createStore} from "redux";
 import {
     setUser,
     setAuthTokenStatus,
-    addAllNote,
+    addAllNotes,
+    addDisplayedNotes,
     addNote,
     changeNoteImportantStatus,
-    changesNotesSaveStatus, deleteNote
+    deleteNote,
+    setNotesCurrentPage,
+    changesNotesSaveStatus
 } from './reducers'
 
 
@@ -18,8 +21,12 @@ const inicialState = {
         authTokenStatus: 0
     },
     notes: {
-        areNotesSaved: true,
-        notes: [
+        areNotesSaved: true, // Идёт ли сейчас сохранение заметок
+        currentPage: 0, // Текущая показываемая страница в заметках
+        notesPerPage: 3, // Сколько заметок показывается на одной странице
+        searchStr: '', // Какой текст ищут
+        // Все заметки
+        allNotes: [
             /*{
                 text: 'Сделай программу на Реакте и Ноде где задачи были бы написаны огромным шрифтом. Думаю это будет выглядеть интересно.',
                 important: false,
@@ -31,7 +38,10 @@ const inicialState = {
                 important: true,
                 timeStamp: 635643223672
             }*/
-        ]
+        ],
+        // Показываемые заметки
+        displayedNotes: []
+        
     },
 }
 
@@ -43,13 +53,17 @@ function reducer(state = inicialState, action) {
         case 'SET_AUTH_TOKEN_STATUS':
             return setAuthTokenStatus(state, action)
         case 'ADD_ALL_NOTES':
-            return addAllNote(state, action)
+            return addAllNotes(state, action)
+        case 'ADD_DISPLAYED_NOTES':
+            return addDisplayedNotes(state, action)
         case 'ADD_NOTE':
             return addNote(state, action)
         case 'CHANGE_NOTE_IMPORTANT_STATUS':
             return changeNoteImportantStatus(state, action)
         case 'DELETE_NOTE':
             return deleteNote(state, action)
+        case 'SET_NOTES_CURRENT_PAGE':
+            return setNotesCurrentPage(state, action)
         case 'CHANGE_NOTES_SAVE_STATUS':
             return changesNotesSaveStatus(state, action)
         default:

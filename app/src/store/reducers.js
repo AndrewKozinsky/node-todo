@@ -22,11 +22,21 @@ export function setAuthTokenStatus(state, action) {
     return copyState
 }
 
-export function addAllNote(state, action) {
+export function addAllNotes(state, action) {
     const copyState = {...state}
     const copyNotes = {...copyState.notes}
     
-    copyNotes.notes = action.notesArr
+    copyNotes.allNotes = action.notesArr
+    
+    copyState.notes = copyNotes
+    return copyState
+}
+
+export function addDisplayedNotes(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.displayedNotes = action.notesArr
     
     copyState.notes = copyNotes
     return copyState
@@ -35,7 +45,7 @@ export function addAllNote(state, action) {
 export function addNote(state, action) {
     const copyState = {...state}
     const copyNotes = {...copyState.notes}
-    const copyNotesArr = [...copyNotes.notes]
+    const copyAllNotes = [...copyNotes.allNotes]
     
     const newNote = {
         text: action.text,
@@ -43,8 +53,9 @@ export function addNote(state, action) {
         timeStamp: Date.now() // Время создания заметки
     }
     
-    copyNotesArr.unshift(newNote)
-    copyNotes.notes = copyNotesArr
+    copyAllNotes.unshift(newNote)
+    copyNotes.allNotes = copyAllNotes
+    copyNotes.currentPage = 0
     copyState.notes = copyNotes
     
     return copyState
@@ -53,12 +64,12 @@ export function addNote(state, action) {
 export function changeNoteImportantStatus(state, action) {
     const copyState = {...state}
     const copyNotes = {...copyState.notes}
-    const copyNotesArr = [...copyNotes.notes]
+    const copyAllNotes = [...copyNotes.allNotes]
     
-    const noteIdx =  copyNotesArr.findIndex(note => note.timeStamp === action.timeStamp)
-    copyNotesArr[noteIdx].important = !copyNotesArr[noteIdx].important
+    const noteIdx = copyAllNotes.findIndex(note => note.timeStamp === action.timeStamp)
+    copyAllNotes[noteIdx].important = !copyAllNotes[noteIdx].important
     
-    copyNotes.notes = copyNotesArr
+    copyNotes.allNotes = copyAllNotes
     copyState.notes = copyNotes
     
     return copyState
@@ -69,8 +80,18 @@ export function deleteNote(state, action) {
     const copyNotes = {...copyState.notes}
     
     // Создам новый массив через фильтрацию существующего массива заметок
-    copyNotes.notes = copyNotes.notes
+    copyNotes.allNotes = copyNotes.allNotes
         .filter(note => note.timeStamp !== action.timeStamp)
+    
+    copyState.notes = copyNotes
+    return copyState
+}
+
+export function setNotesCurrentPage(state, action) {
+    const copyState = {...state}
+    const copyNotes = {...copyState.notes}
+    
+    copyNotes.currentPage = action.pageNum
     
     copyState.notes = copyNotes
     return copyState

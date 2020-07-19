@@ -8,7 +8,7 @@ const siteRouter = require('./api/routes/siteRouter')
 const AppError = require('./api/utils/appError')
 const globalErrorHandler = require('./api/controllers/errorController')
 const cors = require('cors')
-// const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 
 
 const app = express()
@@ -16,8 +16,7 @@ const app = express()
 // Установлю безопасные заголовки в ответ
 // app.use(helmet())
 
-// app.use(cookieParser())
-
+app.use(cookieParser())
 
 // Разрешение обрабатывать запросы от любых адресов если нахожусь в режиме разработки
 if(process.env.NODE_ENV === 'development') {

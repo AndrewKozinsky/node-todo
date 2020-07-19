@@ -21,6 +21,13 @@ export function addAllNotes(notesArr) {
     }
 }
 
+export function addDisplayedNotes(notesArr) {
+    return {
+        type: 'ADD_DISPLAYED_NOTES',
+        notesArr
+    }
+}
+
 export function addNote(text) {
     return {
         type: 'ADD_NOTE',
@@ -39,6 +46,13 @@ export function deleteNote(timeStamp) {
     return {
         type: 'DELETE_NOTE',
         timeStamp
+    }
+}
+
+export function setNotesCurrentPage(pageNum) {
+    return {
+        type: 'SET_NOTES_CURRENT_PAGE',
+        pageNum
     }
 }
 

@@ -14,7 +14,7 @@ export async function getNotesFromServer() {
     
     // По какому адресу буду делать запрос
     const {serverOrigin, isDevelopment} = browserConfig
-    const apiUrl = serverOrigin + '/api/v1/myNotes?page=1'
+    const apiUrl = serverOrigin + '/api/v1/myNotes'
     
     // Возьму токен из LocalStorage
     const locStrToken = localStorage.getItem('authToken')

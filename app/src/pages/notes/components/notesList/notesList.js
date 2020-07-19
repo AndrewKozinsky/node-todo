@@ -6,7 +6,7 @@ import {
     deleteNoteEverywhere,
     animate
 } from './js/resources'
-import {addAllNotes} from '../../../../store/actions'
+import {addAllNotes, addDisplayedNotes} from '../../../../store/actions'
 import s from './css/notesList.scss'
 
 /**
@@ -16,16 +16,48 @@ import s from './css/notesList.scss'
 function NotesList() {
     const dispatch = useDispatch()
     
+    // Получу текущую страницу
+    const {
+        allNotes,
+        currentPage,
+        displayedNotes,
+        notesPerPage,
+        searchStr
+    } = useSelector(store => store.notes)
+    
+    // При загрузке компонента...
     useEffect(() => {
-        // При загрузке компонента запросить все заметки с сервера
-        // и поставить в Хранилище
+        // Запросить все заметки с сервера и поставить в Хранилище
         getNotesFromServer()
             .then(notes =>
                 dispatch(addAllNotes(notes)))
     }, [])
     
-    // Получить из Хранилища массив всех заметок
-    const notesArr = useSelector(state => state.notes.notes)
+    // При изменении массива всех заметок или при изменении текущей страницы
+    // вычислить какие заметки должны быть показаны
+    useEffect(() => {
+
+        // Создать массив где будут заметки с искомым текстом
+        let displayedNotes = allNotes.filter(noteObj => {
+            return noteObj.text.indexOf(searchStr) !== -1
+        })
+        
+        // Узнать на сколько нужно порезать массив всех заметок
+        // чтобы показывать только требуемые заметки
+        const startIndex = currentPage * notesPerPage // Текущая страница умножается на количество показываемых заметок
+        const endIndex = (currentPage + 1) * notesPerPage
+        
+        // Порезать массив показываемых заметок чтобы тут были только заметки,
+        // которые нужно показать на странице
+        displayedNotes = displayedNotes.slice(startIndex, endIndex)
+        
+        // Поставить показываемые заметки в Хранилище
+        dispatch(addDisplayedNotes(displayedNotes))
+        
+    }, [allNotes, currentPage, searchStr])
+    
+    // Получить из Хранилища массив показываемых заметок
+    const notesArr = useSelector(state => state.notes.displayedNotes)
     
     // Если заметок нет, то отрисовать соответствующее уведомление
     if(!notesArr.length) {
