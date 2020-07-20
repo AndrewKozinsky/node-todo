@@ -69,15 +69,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1]
-    } else if(req.cookie && req.cookie.authToken) {
-        token = req.cookie.authToken
-        // console.log(req.cookie)
+    } else if(req.cookies && req.cookies.authToken) {
+        token = req.cookies.authToken
     }
     
-    // Это потом убери!!!!
-    if(req.cookie) {
-        console.log(req.cookie)
-    }
     
     // Если токен не передан, то бросить ошибку
     if(!token) {
