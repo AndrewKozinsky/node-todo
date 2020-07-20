@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const User = require('../mongooseModels/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const sendEmail = require('../utils/email');
+const Email = require('../utils/email');
 const {createSendToken} = require('./authToken');
 
 
@@ -14,9 +14,8 @@ exports.checkToken = async (req, res, next) => {
     
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1]
-    } else if(req.cookie && req.cookie.authToken) {
-        token = req.cookie.authToken
-        console.log('Token:', token);
+    } else if(req.cookies && req.cookies.authToken) {
+        token = req.cookies.authToken
     }
     
     // Если токен не передан, то возвратить false
@@ -50,12 +49,8 @@ exports.checkToken = async (req, res, next) => {
 async function sendEmailAddressConfirmLetter(req, email, confirmToken) {
     const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
     
-    await sendEmail({
-        email,
-        subject: 'Confirm your email for registration at ToDo',
-        text: `Go to ${confirmUrl} to confirm your email.`,
-        html: `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
-    })
+    const userEmail = new Email(email)
+    await userEmail.sendConfirmLetter(confirmUrl)
     
     // TODO Реализуй отправку на настоящую почту.
 }
@@ -257,17 +252,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     })
     
     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-    const emailText = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
-    const emailHtml = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
     
     try {
-        await sendEmail({
-            email: user.email,
-            subject: 'Your password reset token (valid for 10 minutes)',
-            text: emailText,
-            html: emailHtml
-        })
-    
+        const userEmail = new Email(user.email)
+        await userEmail.sendResetPasswordLetter(resetUrl)
+        
         res.status(200).json({
             status: 'success',
             data: {

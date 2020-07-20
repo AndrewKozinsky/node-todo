@@ -8,7 +8,8 @@ async function checkToken() {
     
     // Параметры запроса
     let options = {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'same-origin'
     }
     
     if(locStrToken && browserConfig.isDevelopment) {
