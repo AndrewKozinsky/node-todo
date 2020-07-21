@@ -25,10 +25,11 @@ function NotesSwitcher() {
         {text: 'Selected', sign: 'sun', counter: importantCount, onClick: changeType.bind(null, 'important')}
     ]
     
+    const currentTab = displayedType === 'all' ? 0 : 1
     
     return (
         <div>
-            <RadioButtonsGroup btnsPropsArr={buttonsPropsArr} />
+            <RadioButtonsGroup btnsPropsArr={buttonsPropsArr} current={currentTab} />
         </div>
     );
 }

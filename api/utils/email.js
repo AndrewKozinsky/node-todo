@@ -1,5 +1,7 @@
 const nodemailer = require('nodemailer')
-const htmlToText = require('html-to-text')
+const sendpulse = require('sendpulse-api')
+// const htmlToText = require('html-to-text')
+
 
 module.exports = class Email {
     constructor(email) {
@@ -7,25 +9,35 @@ module.exports = class Email {
         this.from = `Andrew Kozinsky <${process.env.EMAIL_FROM}>`
     }
     
-    newTransport() {
-        if(process.env.NODE_ENV === 'production') {
-            // Sendgrid
-            return 1
-        }
+    async sendConfirmLetter(confirmUrl) {
+        const subject = 'Confirm your email for registration at ToDo'
+        const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
+        const text = `Go to ${confirmUrl} to confirm your email.`
         
-        return nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        })
+        this.send(subject, html, text)
     }
     
-    async send(subject, htmlContent, textContent) {
+    async sendResetPasswordLetter(resetUrl) {
+        const subject = 'Your password reset token (valid for 10 minutes)'
+        const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
+        const text = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
+        
+        this.send(subject, html, text)
+    }
     
-        // 2) Define email options
+    send(subject, htmlContent, textContent) {
+        
+        const mode = process.env.NODE_ENV
+        if(mode === 'production') {
+            this.sendFakeEmail(subject, htmlContent, textContent)
+        }
+        else if(mode === 'development') {
+            this.sendRealEmail(subject, htmlContent, textContent)
+        }
+    }
+    
+    async sendFakeEmail(subject, htmlContent, textContent) {
+        // Define email options
         const mailOptions = {
             from: this.from,
             to: this.to,
@@ -34,56 +46,72 @@ module.exports = class Email {
             text: textContent
         }
     
-        // 3) Create a transport and send email
-        await this.newTransport().sendMail(mailOptions)
+        // Create a transport
+        const transport = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            auth: {
+                user: process.env.EMAIL_USERNAME,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        })
+        
+        // 3) Send email
+        await transport.sendMail(mailOptions)
     }
     
-    async sendConfirmLetter(confirmUrl) {
-        const subject = 'Confirm your email for registration at ToDo'
-        const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
-        const text = `Go to ${confirmUrl} to confirm your email.`
+    sendRealEmail(subject, html, text) {
+        sendpulse.init(API_USER_ID, API_SECRET, TOKEN_STORAGE, function(token) {
         
-        await this.send(subject, html, text)
-    }
-    
-    async sendResetPasswordLetter(resetUrl) {
-        const subject = 'Your password reset token (valid for 10 minutes)'
-        const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
-        const text = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
+            function answerGetter(data) {
+                // console.log(data);
+            }
         
-        await this.send(subject, html, text)
+            let email = {
+                html,
+                text,
+                subject,
+                'from' : {
+                    'name' : 'Andrew Kozinsky',
+                    'email' : this.from
+                },
+                'to' : [
+                    {
+                        "email" : this.to
+                    },
+                ]
+            };
+        
+            sendpulse.smtpSendMail(answerGetter, email);
+        })
     }
 }
 
+
+
+
 /*
-await userEmail.sendConfirmLetter()
-    await sendEmail({
-        email,
-        subject: 'Confirm your email for registration at ToDo',
-        text: `Go to ${confirmUrl} to confirm your email.`,
-        html: `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
-    })
-    */
-
-
-// Старый код. Можно удалить.
-/*const sendEmail = async options => {
-    let transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    })
+sendpulse.init(API_USER_ID, API_SECRET, TOKEN_STORAGE, function(token) {
     
-    const mailOptions = {
-        from: '"Andrew Kozinsky" <andkozinskiy@yandex.ru',
-        to: options.email,
-        subject: options.subject,
-        html: options.html,
-        text: options.text
+    var answerGetter = function(data) {
+        console.log(data);
     }
     
-    await transporter.sendMail(mailOptions)
-}*/
+    var email = {
+        "html" : "<h1>Hello again</h1>",
+        "text" : "Example text",
+        "subject" : "Example subject",
+        "from" : {
+            "name" : "Alex",
+            "email" : "mail@andrewkozinsky.ru"
+        },
+        "to" : [
+            {
+                "name" : "Piter",
+                "email" : "andkozinskiy@yandex.ru"
+            },
+        ]
+    };
+    
+    sendpulse.smtpSendMail(answerGetter, email);
+})*/

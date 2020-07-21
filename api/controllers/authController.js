@@ -50,7 +50,7 @@ async function sendEmailAddressConfirmLetter(req, email, confirmToken) {
     const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
     
     const userEmail = new Email(email)
-    await userEmail.sendConfirmLetter(confirmUrl)
+    userEmail.sendConfirmLetter(confirmUrl)
     
     // TODO Реализуй отправку на настоящую почту.
 }
@@ -255,7 +255,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     
     try {
         const userEmail = new Email(user.email)
-        await userEmail.sendResetPasswordLetter(resetUrl)
+        userEmail.sendResetPasswordLetter(resetUrl)
         
         res.status(200).json({
             status: 'success',
