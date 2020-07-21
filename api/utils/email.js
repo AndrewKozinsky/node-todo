@@ -6,7 +6,7 @@ const sendpulse = require('sendpulse-api')
 module.exports = class Email {
     constructor(email) {
         this.to = email // На какой адрес отправлять письмо
-        this.from = `Andrew Kozinsky <${process.env.EMAIL_FROM}>` // От кого письмо
+        this.from = process.env.EMAIL_FROM // От кого письмо
     }
     
     // Функция отправляет письмо с просьбой подтвердить почтовый адрес
@@ -34,10 +34,10 @@ module.exports = class Email {
         // Режим работы сервера
         const mode = process.env.NODE_ENV
         
-        if(mode === 'development') {
+        if(mode === 'production') {
             this.sendFakeEmail(subject, htmlContent, textContent)
         }
-        else if(mode === 'production') {
+        else if(mode === 'development') {
             this.sendRealEmail(subject, htmlContent, textContent)
         }
     }
@@ -69,12 +69,11 @@ module.exports = class Email {
     
     // Функция отправляющая письма на реальный адрес пользователя
     sendRealEmail(subject, html, text) {
-        
         const userId = process.env.SENDPULSE_API_USER_ID
         const secret = process.env.SENDPULSE_API_SECRET
         const tokenStorage = process.env.SENDPULSE_TOKEN_STORAGE
         
-        sendpulse.init(userId, secret, tokenStorage, function(token) {
+        sendpulse.init(userId, secret, tokenStorage, (token) => {
         
             // Функция сообщающая результат отправки письма
             // В неё первым аргументом попадёт объект отчёта об отправке
