@@ -61,7 +61,11 @@ module.exports = class Email {
     }
     
     sendRealEmail(subject, html, text) {
-        sendpulse.init(API_USER_ID, API_SECRET, TOKEN_STORAGE, function(token) {
+        sendpulse.init(
+            process.env.SENDPULSE_API_USER_ID,
+            process.env.SENDPULSE_API_SECRET,
+            process.env.SENDPULSE_TOKEN_STORAGE,
+            function(token) {
         
             function answerGetter(data) {
                 // console.log(data);
