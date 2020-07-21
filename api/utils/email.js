@@ -34,23 +34,23 @@ module.exports = class Email {
         // Режим работы сервера
         const mode = process.env.NODE_ENV
         
-        if(mode === 'production') {
+        if(mode === 'development') {
             this.sendFakeEmail(subject, htmlContent, textContent)
         }
-        else if(mode === 'development') {
+        else if(mode === 'production') {
             this.sendRealEmail(subject, htmlContent, textContent)
         }
     }
     
     // Функция отправляющая письма на mailtrap.io
-    async sendFakeEmail(subject, htmlContent, textContent) {
+    async sendFakeEmail(subject, html, text) {
         // Define email options
         const mailOptions = {
             from: this.from,
             to: this.to,
             subject,
-            html: htmlContent,
-            text: textContent
+            html,
+            text
         }
     
         // Create a transport
@@ -77,14 +77,14 @@ module.exports = class Email {
         
             // Функция сообщающая результат отправки письма
             // В неё первым аргументом попадёт объект отчёта об отправке
-            function answerGetter(data) {}
+            function answerGetter(data) { }
         
             let email = {
                 html,
                 text,
                 subject,
                 'from' : {
-                    'name' : 'Andrew Kozinsky',
+                    'name' : 'To Do App',
                     'email' : this.from
                 },
                 'to' : [
