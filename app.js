@@ -1,7 +1,7 @@
 const express = require('express')
 const rateLimit = require('express-rate-limit')
-// const helmet = require('helmet')
-// const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
+const mongoSanitize = require('express-mongo-sanitize')
 const userRouter = require('./api/routes/userRouter')
 const myNotesRouter = require('./api/routes/myNotesRouter')
 const siteRouter = require('./api/routes/siteRouter')
@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser')
 const app = express()
 
 // Установлю безопасные заголовки в ответ
-// app.use(helmet())
+app.use(helmet())
 
 app.use(cookieParser())
 
@@ -26,13 +26,8 @@ if(process.env.NODE_ENV === 'development') {
 // Сделаю чтобы в свойство body объекта запроса заносились данные присланные в теле запроса
 app.use(express.json({limit: '10kb'}))
 
-/*app.use((req, res, next) => {
-    console.log(req.body)
-    next()
-})*/
-
 // Удаление вредоносного кода в запросах
-// app.use(mongoSanitize())
+app.use(mongoSanitize())
 
 // Ограничение количества запросов
 const rater = rateLimit({

@@ -5,10 +5,11 @@ const sendpulse = require('sendpulse-api')
 
 module.exports = class Email {
     constructor(email) {
-        this.to = email
-        this.from = `Andrew Kozinsky <${process.env.EMAIL_FROM}>`
+        this.to = email // На какой адрес отправлять письмо
+        this.from = `Andrew Kozinsky <${process.env.EMAIL_FROM}>` // От кого письмо
     }
     
+    // Функция отправляет письмо с просьбой подтвердить почтовый адрес
     async sendConfirmLetter(confirmUrl) {
         const subject = 'Confirm your email for registration at ToDo'
         const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
@@ -17,6 +18,7 @@ module.exports = class Email {
         this.send(subject, html, text)
     }
     
+    // Функция отправляет письмо со ссылкой на сброс пароля
     async sendResetPasswordLetter(resetUrl) {
         const subject = 'Your password reset token (valid for 10 minutes)'
         const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
@@ -25,17 +27,22 @@ module.exports = class Email {
         this.send(subject, html, text)
     }
     
+    // Общая функция отправки письма.
+    // В зависимости от режима сервера отправляет письма либо на mailtrap.io либо на реальный адрес
     send(subject, htmlContent, textContent) {
         
+        // Режим работы сервера
         const mode = process.env.NODE_ENV
-        if(mode === 'production') {
+        
+        if(mode === 'development') {
             this.sendFakeEmail(subject, htmlContent, textContent)
         }
-        else if(mode === 'development') {
+        else if(mode === 'production') {
             this.sendRealEmail(subject, htmlContent, textContent)
         }
     }
     
+    // Функция отправляющая письма на mailtrap.io
     async sendFakeEmail(subject, htmlContent, textContent) {
         // Define email options
         const mailOptions = {
@@ -60,16 +67,18 @@ module.exports = class Email {
         await transport.sendMail(mailOptions)
     }
     
+    // Функция отправляющая письма на реальный адрес пользователя
     sendRealEmail(subject, html, text) {
-        sendpulse.init(
-            process.env.SENDPULSE_API_USER_ID,
-            process.env.SENDPULSE_API_SECRET,
-            process.env.SENDPULSE_TOKEN_STORAGE,
-            function(token) {
         
-            function answerGetter(data) {
-                // console.log(data);
-            }
+        const userId = process.env.SENDPULSE_API_USER_ID
+        const secret = process.env.SENDPULSE_API_SECRET
+        const tokenStorage = process.env.SENDPULSE_TOKEN_STORAGE
+        
+        sendpulse.init(userId, secret, tokenStorage, function(token) {
+        
+            // Функция сообщающая результат отправки письма
+            // В неё первым аргументом попадёт объект отчёта об отправке
+            function answerGetter(data) {}
         
             let email = {
                 html,
@@ -80,9 +89,7 @@ module.exports = class Email {
                     'email' : this.from
                 },
                 'to' : [
-                    {
-                        "email" : this.to
-                    },
+                    { "email" : this.to }
                 ]
             };
         
@@ -90,32 +97,3 @@ module.exports = class Email {
         })
     }
 }
-
-
-
-
-/*
-sendpulse.init(API_USER_ID, API_SECRET, TOKEN_STORAGE, function(token) {
-    
-    var answerGetter = function(data) {
-        console.log(data);
-    }
-    
-    var email = {
-        "html" : "<h1>Hello again</h1>",
-        "text" : "Example text",
-        "subject" : "Example subject",
-        "from" : {
-            "name" : "Alex",
-            "email" : "mail@andrewkozinsky.ru"
-        },
-        "to" : [
-            {
-                "name" : "Piter",
-                "email" : "andkozinskiy@yandex.ru"
-            },
-        ]
-    };
-    
-    sendpulse.smtpSendMail(answerGetter, email);
-})*/
