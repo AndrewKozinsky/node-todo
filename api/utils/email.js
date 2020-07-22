@@ -77,7 +77,7 @@ module.exports = class Email {
         
             // Функция сообщающая результат отправки письма
             // В неё первым аргументом попадёт объект отчёта об отправке
-            function answerGetter(data) { }
+            function answerGetter(data) { console.log(data) }
         
             let email = {
                 html,

@@ -15,10 +15,11 @@ function MainPage() {
     // Поэтому проверю.
     if(authTokenStatus === 0) {
         checkToken().then((status) => {
+            console.log(status);
             dispatch( setAuthTokenStatus(status) )
         })
         
-        return 'IndexPage'
+        return null //'IndexPage'
     }
     
     // Если токена нет или он неверный, то пользователь еще не вошёл, перенаправить на страницу входа

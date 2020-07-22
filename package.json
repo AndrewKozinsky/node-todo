@@ -2,13 +2,15 @@
   "name": "node-todo",
   "version": "1.0.0",
   "description": "A simple to do application",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
-    "start": "node server.js",
-    "node-dev": "nodemon server.js",
-    "node-debug": "ndb server.js",
-    "react-dev": "webpack-dev-server",
-    "react-build": "webpack --env.mode=production"
+    "start": "node api/server.js",
+    "dev": "concurrently \"nodemon api/server.js\" \"webpack-dev-server --config app/webpack.config.js\"",
+    "node-dev": "nodemon api/server.js",
+    "node-debug": "ndb api/server.js",
+    "react-dev": "webpack-dev-server --config app/webpack.config.js",
+    "react-dev2": "webpack --config app/webpack.config.js",
+    "react-build": "webpack --env.mode=production --config app/webpack.config.js"
   },
   "keywords": [
     "node.js",
@@ -61,6 +63,7 @@
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
     "babel-loader": "^8.1.0",
+    "concurrently": "^5.2.0",
     "css-loader": "^3.6.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",

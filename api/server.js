@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './api/config.env' });
 
 // Выключение сервера при ошибке типа uncaughtException
 process.on('uncaughtException', err => {

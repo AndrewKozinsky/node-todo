@@ -1,12 +1,13 @@
+const path = require('path')
 const express = require('express')
 const rateLimit = require('express-rate-limit')
 const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
-const userRouter = require('./api/routes/userRouter')
-const myNotesRouter = require('./api/routes/myNotesRouter')
-const siteRouter = require('./api/routes/siteRouter')
-const AppError = require('./api/utils/appError')
-const globalErrorHandler = require('./api/controllers/errorController')
+const userRouter = require('./routes/userRouter')
+const myNotesRouter = require('./routes/myNotesRouter')
+const siteRouter = require('./routes/siteRouter')
+const AppError = require('./utils/appError')
+const globalErrorHandler = require('./controllers/errorController')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
@@ -39,7 +40,9 @@ app.use('/api', rater)
 
 
 // Статические файлы
-app.use(express.static(`${__dirname}/app/dist`))
+app.use(express.static(
+    path.resolve(process.cwd(), 'api/static'))
+)
 
 // Маршруты API
 app.use('/api/v1/users', userRouter);

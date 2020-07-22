@@ -1,3 +1,21 @@
+/*import React from 'react'
+import svg from '../formElements/button/svg/check-all.svg'
+import './css/reset.css'
+
+const App = () => {
+    
+    return (
+            <div >
+                Hello
+            </div>
+    )
+}
+
+
+export default App*/
+
+
+
 import React from 'react'
 import './css/reset.css'
 import './css/general.scss'
