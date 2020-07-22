@@ -40,8 +40,11 @@ app.use('/api', rater)
 
 
 // Статические файлы
-app.use(express.static(
+/*app.use(express.static(
     path.resolve(process.cwd(), 'api/static'))
+)*/
+app.use(express.static(
+    path.resolve(process.cwd(), 'app/dist'))
 )
 
 // Маршруты API
