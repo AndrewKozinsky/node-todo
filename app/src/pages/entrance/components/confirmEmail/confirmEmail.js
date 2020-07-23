@@ -12,7 +12,11 @@ function ConfirmEmail() {
     useEffect(() => {
         confirmEmail(confirmEmailToken)
             .then(requestStatus => {
-                if(requestStatus) setNeedToGoToEnterPage(true)
+                alert(55)
+                
+                setTimeout(() => {
+                    if(requestStatus) setNeedToGoToEnterPage(true)
+                }, 20000)
             })
     }, [])
     
