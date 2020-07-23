@@ -40,7 +40,8 @@ const EntrancePages = () => {
                         <EnterForm />
                     </Route>
                     <Route path='/confirm-email/:confirmEmailToken'>
-                        <ConfirmEmail />
+                        {/*<ConfirmEmail />*/}
+                        <p>ConfirmEmail 2</p>
                     </Route>
                     <Route path='/forgot-password'>
                         <ForgotPasswordForm />
