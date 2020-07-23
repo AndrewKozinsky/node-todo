@@ -1,7 +1,7 @@
 import React from 'react'
-import './css/reset.css'
-import './css/general.scss'
-import s from './css/app.scss'
+// import './css/reset.css'
+// import './css/general.scss'
+// import s from './css/app.scss'
 
 import {
     BrowserRouter as Router,
@@ -17,6 +17,14 @@ import ConfirmEmailPage from "../../pages/confirmEmail";
 
 
 const App = () => {
+    
+    
+    const s = new Proxy({}, {
+        get(target, prop) {
+            const num = Math.random()
+            return 's' + num
+        }
+    })
     
     return (
         <Router>

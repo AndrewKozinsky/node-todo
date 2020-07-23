@@ -9,7 +9,6 @@ import RegForm from "./components/regForm";
 import EnterForm from "./components/enterForm";
 import ForgotPasswordForm from "./components/forgotPasswordForm";
 import ResetPasswordForm from "./components/resetPasswordForm";
-import ConfirmEmailPage from "../confirmEmail";
 
 
 const EntrancePages = () => {
@@ -38,9 +37,6 @@ const EntrancePages = () => {
                     </Route>
                     <Route path='/enter'>
                         <EnterForm />
-                    </Route>
-                    <Route path='/confirm-email/:confirmEmailToken'>
-                        <ConfirmEmailPage />
                     </Route>
                     <Route path='/forgot-password'>
                         <ForgotPasswordForm />
