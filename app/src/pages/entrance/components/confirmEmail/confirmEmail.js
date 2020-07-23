@@ -20,7 +20,7 @@ function ConfirmEmail() {
             })
     }, [])
     
-    if(needToGoToEnterPage) return <Redirect to='/notes' />
+    // if(needToGoToEnterPage) return <Redirect to='/notes' />
     
         
     return <p>Your email or wasn't registered or is registered. Please try again or use another email.</p>

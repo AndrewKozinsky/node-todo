@@ -4,11 +4,12 @@ import NotesSearch from "./components/notesSearch";
 import NewTaskForm from "./components/newTaskForm";
 import NotesList from "./components/notesList";
 import Pagination from "./components/pagination";
-import s from './css/notesPage.scss'
+// import s from './css/notesPage.scss'
 
 
 function NotesPage() {
-    return <div className={s.pageWrapper}>
+    return 'Notes Page'
+    /*return <div className={s.pageWrapper}>
         <div className={s.topPanel}>
             <div className={s.topPanel__left}>
                 <NotesSwitcher />
@@ -26,7 +27,7 @@ function NotesPage() {
         <div className={s.paginationWrapper}>
             <Pagination />
         </div>
-    </div>
+    </div>*/
 }
 
 export default NotesPage
