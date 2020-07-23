@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer')
 const sendpulse = require('sendpulse-api')
 const EmailTemplate = require('./emailTemplate')
-// const htmlToText = require('html-to-text')
 
 
 module.exports = class Email {
@@ -16,13 +15,6 @@ module.exports = class Email {
         const subject = 'Confirm your email for registration at ToDo'
         const [html, text] = new EmailTemplate(this.host).createConfirmLetter(confirmUrl)
         this.send(subject, html, text)
-        
-        
-        // const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
-        //const html = baseTemplate
-        //const text = `Go to ${confirmUrl} to confirm your email.`
-        
-        //
     }
     
     // Функция отправляет письмо со ссылкой на сброс пароля
@@ -30,12 +22,6 @@ module.exports = class Email {
         const subject = 'Your password reset token (valid for 10 minutes)'
         const [html, text] = new EmailTemplate(this.host).createResetPasswordLetter(resetUrl)
         this.send(subject, html, text)
-        
-        
-        //const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
-        //const text = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
-        
-        //this.send(subject, html, text)
     }
     
     // Общая функция отправки письма.

@@ -47,16 +47,19 @@ app.use('/api/v1/myNotes', myNotesRouter)
 app.use(express.static(
     path.resolve(process.cwd(), 'app/dist'))
 )
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(process.cwd(), 'app/dist/index.html'));
-});
-
 
 // Статические файлы на сервере.
 // Для обращения к файлу в папке static-files нужно написать static и затем имя файла.
 app.use('/static', express.static(
     path.resolve(process.cwd(), 'api/static-files'))
 )
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(process.cwd(), 'app/dist/index.html'));
+});
+
+
+
 
 
 // Обработка несуществующего маршрута
