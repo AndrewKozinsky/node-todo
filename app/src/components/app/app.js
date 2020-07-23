@@ -37,9 +37,6 @@ const App = () => {
                     <Route path='/(notes|user)'>
                         <UserAreaPages />
                     </Route>
-                    <Route path='/confirmEmail/:confirmEmailToken'>
-                        <ConfirmEmail />
-                    </Route>
                     <Route path="*">
                         <PageNotFound />
                     </Route>
