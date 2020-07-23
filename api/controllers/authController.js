@@ -43,18 +43,23 @@ exports.checkToken = async (req, res, next) => {
  * Функция отправляющая письмо со ссылкой подтверждения почты
  * @param {Object} req — объект запроса от клиента
  * @param {String} email — почта пользователю, которую он должен подтвердить
+ * @param {Boolean} requestFromClient — сделал ли запрос от браузера.
  * @param {String} confirmToken — токен подтверждения почты
  * @returns {Promise<void>}
  */
-async function sendEmailAddressConfirmLetter(req, email, confirmToken) {
-    const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
+async function sendEmailAddressConfirmLetter(req, email, requestFromClient, confirmToken) {
+    // В requestFromClient содержится булево значение сделан ли зарпос из браузера.
+    // Если из браузера, то послать письмо на адрес на клиентской части
+    // Если не из браузера, то послать письмо на адрес API
+    const confirmUrl = requestFromClient
+        ? `${req.protocol}://${req.get('host')}/confirmEmail/${confirmToken}`
+        : `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`
     
     const userEmail = new Email(email, req.headers.origin)
     userEmail.sendConfirmLetter(confirmUrl)
-    
-    // TODO Реализуй отправку на настоящую почту.
 }
 exports.sendEmailAddressConfirmLetter = sendEmailAddressConfirmLetter
+
 
 // Функция защищающая маршрут от неавторизованных пользователей.
 // Если пользователь отправил токен, то программа запускает следующий middleware.
@@ -118,8 +123,11 @@ exports.signUp = catchAsync(async (req, res, next) => {
         passwordConfirm: req.body.passwordConfirm
     })
     
+    // В req.body.requestFromClient будет true если запрос сделан из браузера
+    // Это потребуется для отправки сообщения о подтверждении почты на другой адрес
+    
     // Отправлю письмо с подтверждением почты
-    await sendEmailAddressConfirmLetter(req, req.body.email, emailConfirmToken)
+    await sendEmailAddressConfirmLetter(req, req.body.email, !!req.body.requestFromClient, emailConfirmToken)
     
     // Убрать пароль и токен подтверждения почты.
     newUser.password = undefined;

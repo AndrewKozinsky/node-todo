@@ -131,7 +131,7 @@ function SubmitBtn({formik}) {
  */
 export async function onSubmitHandler(values, setServerErr, setNotification, dispatch) {
     
-    // По какому адресу буду делать запрос на вход пользователя
+    // По какому адресу буду делать запрос на регистрацию пользователя
     const {serverOrigin, isDevelopment} = browserConfig
     const apiUrl = serverOrigin + '/api/v1/users/signup'
     
@@ -139,7 +139,10 @@ export async function onSubmitHandler(values, setServerErr, setNotification, dis
     const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values)
+        body: JSON.stringify({
+            ...values,
+            requestFromClient: true
+        })
     }
     
     // Сделаю запрос на сервер и полученные данные помещу в serverRes

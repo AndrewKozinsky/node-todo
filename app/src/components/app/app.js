@@ -1,21 +1,3 @@
-/*import React from 'react'
-import svg from '../formElements/button/svg/check-all.svg'
-import './css/reset.css'
-
-const App = () => {
-    
-    return (
-            <div >
-                Hello
-            </div>
-    )
-}
-
-
-export default App*/
-
-
-
 import React from 'react'
 import './css/reset.css'
 import './css/general.scss'
@@ -30,6 +12,8 @@ import {
 import MainPage from "../../pages/main"
 import UserAreaPages from "../../pages/userArea";
 import EntrancePages from "../../pages/entrance";
+import PageNotFound from "../../pages/pageNotFound";
+import ConfirmEmailPage from "../../pages/confirmEmail";
 
 
 const App = () => {
@@ -46,6 +30,12 @@ const App = () => {
                     </Route>
                     <Route path='/(notes|user)'>
                         <UserAreaPages />
+                    </Route>
+                    <Route path='/confirmEmail/:confirmEmailToken'>
+                        <ConfirmEmailPage />
+                    </Route>
+                    <Route path="*">
+                        <PageNotFound />
                     </Route>
                 </Switch>
             </div>

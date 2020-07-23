@@ -1,6 +1,4 @@
-const {promisify} = require('util');
 const jwt = require('jsonwebtoken');
-const User = require('../mongooseModels/user');
 
 
 /**

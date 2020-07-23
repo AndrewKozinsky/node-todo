@@ -1,6 +1,6 @@
-const baseTemplate = require('./letters/prepared/baseTemplate')
-const confirmLetterContentTemplate = require('./letters/prepared/confirmLetterContentTemplate')
-const resetPasswordLetterContentTemplate = require('./letters/prepared/resetPasswordLetterContentTemplate')
+const baseTemplate = require('./letters/functions/baseTemplate')
+const confirmLetterContentTemplate = require('./letters/functions/confirmLetterContentTemplate')
+const resetPasswordLetterContentTemplate = require('./letters/functions/resetPasswordLetterContentTemplate')
 
 
 class EmailTemplate {

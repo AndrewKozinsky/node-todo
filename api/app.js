@@ -5,7 +5,6 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const userRouter = require('./routes/userRouter')
 const myNotesRouter = require('./routes/myNotesRouter')
-// const siteRouter = require('./routes/siteRouter') // Кандидат на удаление
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
 const cors = require('cors')
@@ -53,8 +52,6 @@ app.use('/static', express.static(
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/myNotes', myNotesRouter)
 
-// Маршруты сайта
-// app.use('/', siteRouter)  // Кандидат на удаление
 
 // Обработка несуществующего маршрута
 app.all("*", (req, res, next) => {

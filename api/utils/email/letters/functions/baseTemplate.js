@@ -1,7 +1,7 @@
 
 function baseTemplate(host, content) {
     // Адрес логотипа
-    const logoSrc = host + 'static/letters-images/logo.svg'
+    const logoSrc = host + '/static/letters-images/logo.svg'
     
     return `
 <!DOCTYPE html>

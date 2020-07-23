@@ -143,7 +143,8 @@ function manageCSS(mode) {
 function managePlugins(mode) {
     let pluginsConfig = [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "index.html")
+            template: path.resolve(__dirname, "index.html"),
+            favicon: path.resolve(__dirname, "favicon.png"),
         })
     ]
     
