@@ -3,7 +3,7 @@ import {Redirect, useParams} from "react-router-dom";
 const {confirmEmail} = require("./js/resources");
 
 
-function ConfirmEmailPage() {
+function ConfirmEmail() {
     
     let { confirmEmailToken } = useParams();
     
@@ -23,4 +23,4 @@ function ConfirmEmailPage() {
     return <p>Your email or wasn't registered or is registered. Please try again or use another email.</p>
 }
 
-export default ConfirmEmailPage;
+export default ConfirmEmail;

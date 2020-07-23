@@ -13,7 +13,7 @@ import MainPage from "../../pages/main"
 import UserAreaPages from "../../pages/userArea";
 import EntrancePages from "../../pages/entrance";
 import PageNotFound from "../../pages/pageNotFound";
-import ConfirmEmailPage from "../../pages/confirmEmail";
+import ConfirmEmail from "../../pages/entrance/components/confirmEmail";
 
 
 const App = () => {
@@ -25,14 +25,20 @@ const App = () => {
                     <Route path='/' exact>
                         <MainPage />
                     </Route>
-                    <Route path='/(reg|enter|forgot-password|reset-password/:token)'>
+                    <Route path='/(reg|enter|forgot-password)'>
+                        <EntrancePages />
+                    </Route>
+                    <Route path='/confirm-email/:confirmEmailToken'>
+                        <EntrancePages />
+                    </Route>
+                    <Route path='/reset-password/:token'>
                         <EntrancePages />
                     </Route>
                     <Route path='/(notes|user)'>
                         <UserAreaPages />
                     </Route>
                     <Route path='/confirmEmail/:confirmEmailToken'>
-                        <ConfirmEmailPage />
+                        <ConfirmEmail />
                     </Route>
                     <Route path="*">
                         <PageNotFound />

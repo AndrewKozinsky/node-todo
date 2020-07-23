@@ -259,7 +259,11 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
         validateBeforeSave: false
     })
     
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    // В req.body.requestFromClient может быть true если запрос сделан из браузера
+    // В зависимости от этого нужно в resetUrl поставить разные адреса сброса пароля
+    const resetUrl = !!req.body.requestFromClient
+        ? `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`
+        : `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`
     
     try {
         const userEmail = new Email(user.email, req.headers.origin)
