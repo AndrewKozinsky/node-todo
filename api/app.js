@@ -38,6 +38,10 @@ const rater = rateLimit({
 app.use('/api', rater)
 
 
+// Маршруты API
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/myNotes', myNotesRouter)
+
 
 // Статические файлы Приложения
 app.use(express.static(
@@ -53,10 +57,6 @@ app.get('*', (req, res) => {
 app.use('/static', express.static(
     path.resolve(process.cwd(), 'api/static-files'))
 )
-
-// Маршруты API
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/myNotes', myNotesRouter)
 
 
 // Обработка несуществующего маршрута
