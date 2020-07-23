@@ -52,7 +52,7 @@ async function sendEmailAddressConfirmLetter(req, email, requestFromClient, conf
     // Если из браузера, то послать письмо на адрес на клиентской части
     // Если не из браузера, то послать письмо на адрес API
     const confirmUrl = requestFromClient
-        ? `${req.protocol}://${req.get('host')}/confirmEmail/${confirmToken}`
+        ? `${req.protocol}://${req.get('host')}/confirm-email/${confirmToken}`
         : `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`
     
     const userEmail = new Email(email, req.headers.origin)
