@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const siteController = require('../controllers/siteController')
+// const express = require('express')
+// const router = express.Router()
+// const siteController = require('../controllers/siteController')
 
 
 // router.get('/', siteController.getSite)
@@ -11,4 +11,4 @@ const siteController = require('../controllers/siteController')
 // router.get('/notes', siteController.getSite)
 // router.get('/user', siteController.getSite)
 
-module.exports = router
+// module.exports = router

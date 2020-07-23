@@ -15,7 +15,6 @@ function MainPage() {
     // Поэтому проверю.
     if(authTokenStatus === 0) {
         checkToken().then((status) => {
-            console.log(status);
             dispatch( setAuthTokenStatus(status) )
         })
         

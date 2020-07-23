@@ -1,30 +1,41 @@
 const nodemailer = require('nodemailer')
 const sendpulse = require('sendpulse-api')
+const EmailTemplate = require('./emailTemplate')
 // const htmlToText = require('html-to-text')
 
 
 module.exports = class Email {
-    constructor(email) {
+    constructor(email, host) {
         this.to = email // На какой адрес отправлять письмо
         this.from = process.env.EMAIL_FROM // От кого письмо
+        this.host = host // Домен сайта
     }
     
     // Функция отправляет письмо с просьбой подтвердить почтовый адрес
     async sendConfirmLetter(confirmUrl) {
         const subject = 'Confirm your email for registration at ToDo'
-        const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
-        const text = `Go to ${confirmUrl} to confirm your email.`
-        
+        const [html, text] = new EmailTemplate(this.host).createConfirmLetter(confirmUrl)
         this.send(subject, html, text)
+        
+        
+        // const html = `<p>Go to <a href="${confirmUrl}">${confirmUrl}</a> to confirm your email.</p>`
+        //const html = baseTemplate
+        //const text = `Go to ${confirmUrl} to confirm your email.`
+        
+        //
     }
     
     // Функция отправляет письмо со ссылкой на сброс пароля
     async sendResetPasswordLetter(resetUrl) {
         const subject = 'Your password reset token (valid for 10 minutes)'
-        const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
-        const text = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
-        
+        const [html, text] = new EmailTemplate(this.host).createResetPasswordLetter(resetUrl)
         this.send(subject, html, text)
+        
+        
+        //const html = `Forget your password? Go to <a href="${resetUrl}">this page</a> to change it.\n\nIf you didn't forget your password, please ignore this email.`;
+        //const text = `Forget your password? Go to ${resetUrl} to change it.\n\nIf you didn't forget your password, please ignore this email.`
+        
+        //this.send(subject, html, text)
     }
     
     // Общая функция отправки письма.
@@ -77,7 +88,7 @@ module.exports = class Email {
         
             // Функция сообщающая результат отправки письма
             // В неё первым аргументом попадёт объект отчёта об отправке
-            function answerGetter(data) { console.log(data) }
+            function answerGetter(data) { }
         
             let email = {
                 html,

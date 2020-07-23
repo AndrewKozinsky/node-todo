@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const User = require('../mongooseModels/user');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
-const Email = require('../utils/email');
+const Email = require('../utils/email/email');
 const {createSendToken} = require('./authToken');
 
 
@@ -49,7 +49,7 @@ exports.checkToken = async (req, res, next) => {
 async function sendEmailAddressConfirmLetter(req, email, confirmToken) {
     const confirmUrl = `${req.protocol}://${req.get('host')}/api/v1/users/confirmEmail/${confirmToken}`;
     
-    const userEmail = new Email(email)
+    const userEmail = new Email(email, req.headers.origin)
     userEmail.sendConfirmLetter(confirmUrl)
     
     // TODO Реализуй отправку на настоящую почту.
@@ -254,7 +254,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     const resetUrl = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
     
     try {
-        const userEmail = new Email(user.email)
+        const userEmail = new Email(user.email, req.headers.origin)
         userEmail.sendResetPasswordLetter(resetUrl)
         
         res.status(200).json({

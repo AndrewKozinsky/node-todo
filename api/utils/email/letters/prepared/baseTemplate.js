@@ -1,3 +1,9 @@
+
+function baseTemplate(host, content) {
+    // Адрес логотипа
+    const logoSrc = host + 'static/letters-images/logo.svg'
+    
+    return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,22 +63,12 @@
 <div class="page-wrapper">
     <div class="header-wrapper">
         <a href="">
-            <img src="images/logo.png" alt="To Do List logo">
+            <img src="${logoSrc}" alt="To Do List logo">
         </a>
     </div>
     <div class="hr"></div>
     <div class="content">
-        <p class="paragraph">
-            Your email address was provided when you registered on the <i>To Do List</i> service. Please confirm your mail address by clicking on this button:
-        </p>
-        <div class="button-link-wrapper">
-            <a href="" class="button-link">
-                Confirm my email
-            </a>
-        </div>
-        <p class="paragraph">
-            If you did not register for this service, please ignore this letter.
-        </p>
+        ${content}
     </div>
     <div class="hr"></div>
     <div class="footer-wrapper">
@@ -83,4 +79,7 @@
 </div>
 
 </body>
-</html>
+</html>`
+}
+
+module.exports = baseTemplate

@@ -5,7 +5,7 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const userRouter = require('./routes/userRouter')
 const myNotesRouter = require('./routes/myNotesRouter')
-const siteRouter = require('./routes/siteRouter')
+// const siteRouter = require('./routes/siteRouter') // Кандидат на удаление
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
 const cors = require('cors')
@@ -39,12 +39,14 @@ const rater = rateLimit({
 app.use('/api', rater)
 
 
-// Статические файлы
-/*app.use(express.static(
-    path.resolve(process.cwd(), 'api/static'))
-)*/
+// Статические файлы Приложения
 app.use(express.static(
     path.resolve(process.cwd(), 'app/dist'))
+)
+// Статические файлы на сервере.
+// Для обращения к файлу в папке static-files нужно написать static и затем имя файла.
+app.use('/static', express.static(
+    path.resolve(process.cwd(), 'api/static-files'))
 )
 
 // Маршруты API
@@ -52,7 +54,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/myNotes', myNotesRouter)
 
 // Маршруты сайта
-app.use('/', siteRouter)
+// app.use('/', siteRouter)  // Кандидат на удаление
 
 // Обработка несуществующего маршрута
 app.all("*", (req, res, next) => {
