@@ -9,7 +9,7 @@ import RegForm from "./components/regForm";
 import EnterForm from "./components/enterForm";
 import ForgotPasswordForm from "./components/forgotPasswordForm";
 import ResetPasswordForm from "./components/resetPasswordForm";
-import ConfirmEmail from "./components/confirmEmail";
+import ConfirmEmailPage from "../confirmEmail";
 
 
 const EntrancePages = () => {
@@ -40,7 +40,7 @@ const EntrancePages = () => {
                         <EnterForm />
                     </Route>
                     <Route path='/confirm-email/:confirmEmailToken'>
-                        <ConfirmEmail />
+                        <ConfirmEmailPage />
                     </Route>
                     <Route path='/forgot-password'>
                         <ForgotPasswordForm />

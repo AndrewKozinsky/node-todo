@@ -3,7 +3,7 @@ import {Redirect, useParams} from "react-router-dom"
 import {confirmEmail} from "./js/resources"
 
 
-function ConfirmEmail() {
+function ConfirmEmailPage() {
     
     let { confirmEmailToken } = useParams();
     
@@ -12,7 +12,6 @@ function ConfirmEmail() {
     useEffect(() => {
         confirmEmail(confirmEmailToken)
             .then(requestStatus => {
-                // alert(55)
                 
                 setTimeout(() => {
                     if(requestStatus) setNeedToGoToEnterPage(true)
@@ -20,10 +19,10 @@ function ConfirmEmail() {
             })
     }, [])
     
-    // if(needToGoToEnterPage) return <Redirect to='/notes' />
+    if(needToGoToEnterPage) return <Redirect to='/notes' />
     
         
     return <p>Your email or wasn't registered or is registered. Please try again or use another email.</p>
 }
 
-export default ConfirmEmail;
+export default ConfirmEmailPage;

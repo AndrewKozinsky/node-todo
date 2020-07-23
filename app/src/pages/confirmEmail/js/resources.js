@@ -1,4 +1,4 @@
-import browserConfig from "../../../../../browserConfig";
+import browserConfig from "../../../browserConfig";
 
 export async function confirmEmail(confirmEmailToken) {
     
