@@ -17,7 +17,6 @@ import ConfirmEmailPage from "../../pages/confirmEmail";
 
 
 const App = () => {
-    
     return (
         <Router>
             <div className={s.app}>
