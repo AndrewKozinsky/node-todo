@@ -36,8 +36,6 @@ const server = app.listen(3000, () => {
     console.log('Server started 🔥')
 })
 
-// console.log(tt);
-
 
 /*process.on('SIGINT', () => {
     console.info('SIGINT signal received.')
