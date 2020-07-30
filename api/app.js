@@ -1,22 +1,22 @@
 const path = require('path')
 const express = require('express')
-const rateLimit = require('express-rate-limit')
-const helmet = require('helmet')
-const mongoSanitize = require('express-mongo-sanitize')
+// const rateLimit = require('express-rate-limit')
+// const helmet = require('helmet')
+// const mongoSanitize = require('express-mongo-sanitize')
 const userRouter = require('./routes/userRouter')
 const myNotesRouter = require('./routes/myNotesRouter')
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
 const cors = require('cors')
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
 
 
 const app = express()
 
 // Установлю безопасные заголовки в ответ
-app.use(helmet())
+// app.use(helmet())
 
-app.use(cookieParser())
+// app.use(cookieParser())
 
 // Разрешение обрабатывать запросы от любых адресов если нахожусь в режиме разработки
 if(process.env.NODE_ENV === 'development') {
@@ -27,15 +27,15 @@ if(process.env.NODE_ENV === 'development') {
 app.use(express.json({limit: '10kb'}))
 
 // Удаление вредоносного кода в запросах
-app.use(mongoSanitize())
+// app.use(mongoSanitize())
 
 // Ограничение количества запросов
-const rater = rateLimit({
+/*const rater = rateLimit({
     max: 100,
     windowMs: 60 * 60 * 1000,
     message: 'Too many request from this IP, please try again in an hour!'
-})
-app.use('/api', rater)
+})*/
+// app.use('/api', rater)
 
 
 // Маршруты API
@@ -54,20 +54,18 @@ app.use('/static', express.static(
     path.resolve(process.cwd(), 'api/static-files'))
 )
 
-app.get('/*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.resolve(process.cwd(), 'app/dist/index.html'));
-});
-
-
+})
 
 
 
 // Обработка несуществующего маршрута
-app.all("*", (req, res, next) => {
+/*app.all("*", (req, res, next) => {
     next(
         new AppError(`Can't find ${req.originalUrl} on the server!`, 404)
     )
-})
+})*/
 
 // Глобальный обработчик ошибок
 app.use(globalErrorHandler)

@@ -10,7 +10,8 @@ process.on('uncaughtException', err => {
 })
 
 // Подключение файла app.js с маршрутами
-const app = require('./app');
+const app = require('./app')
+
 
 // Строка с данными о подключении
 const DB = process.env.DATABASE
@@ -19,7 +20,7 @@ const DB = process.env.DATABASE
 
 // Настройка Монгуса чтобы не ругался
 mongoose.set('useCreateIndex', true)
-// mongoose.set('useFindAndModify', false)
+// --mongoose.set('useFindAndModify', false)
 
 // Настройка соединения с MongoDB
 mongoose.connect(DB, {
@@ -31,9 +32,21 @@ mongoose.connect(DB, {
 
 
 // Прослушивание порта на сервере
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(3000, () => {
     console.log('Server started 🔥')
 })
+
+// console.log(tt);
+
+
+/*process.on('SIGINT', () => {
+    console.info('SIGINT signal received.')
+    console.log('Closing http server.')
+    server.close(err => {
+        console.error(err)
+        process.exit(1)
+    })
+});*/
 
 // Выключение сервера при ошибке типа unhandledRejection
 process.on('unhandledRejection', err => {
